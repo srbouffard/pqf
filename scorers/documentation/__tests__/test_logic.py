@@ -71,8 +71,9 @@ def test_check_url_alive_false_on_404():
 def test_compute_metrics_happy_path(mocker):
     mocker.patch(
         "scorers.documentation.logic._check_file_exists",
-        side_effect=lambda repo, fname, token: fname
-        in {"README.md", "CONTRIBUTING.md", "SECURITY.md"},
+        side_effect=lambda repo, fname, token: (
+            fname in {"README.md", "CONTRIBUTING.md", "SECURITY.md"}
+        ),
     )
     mocker.patch("scorers.documentation.logic._check_url_alive", return_value=True)
     mocker.patch(
@@ -85,19 +86,13 @@ def test_compute_metrics_happy_path(mocker):
     mock_client.chat.completions.create.side_effect = [
         MagicMock(
             choices=[
-                MagicMock(
-                    message=MagicMock(
-                        content='{"diataxis_coverage": 2, "reasoning": "ok"}'
-                    )
-                )
+                MagicMock(message=MagicMock(content='{"diataxis_coverage": 2, "reasoning": "ok"}'))
             ]
         ),
         MagicMock(
             choices=[
                 MagicMock(
-                    message=MagicMock(
-                        content='{"style_linter_passing": false, "reasoning": "ok"}'
-                    )
+                    message=MagicMock(content='{"style_linter_passing": false, "reasoning": "ok"}')
                 )
             ]
         ),

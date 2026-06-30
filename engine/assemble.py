@@ -12,6 +12,7 @@ Usage:
         --output public/portfolio.json \
         [--update-drift]
 """
+
 import argparse
 import json
 import sys
@@ -57,7 +58,9 @@ def _result_to_dict(result, product: dict) -> dict:
                     "status": dim.drift.status,
                     "first_seen_at": dim.drift.first_seen_at,
                     "deadline": dim.drift.deadline,
-                } if dim.drift else None,
+                }
+                if dim.drift
+                else None,
             }
             for name, dim in result.dimensions.items()
         },

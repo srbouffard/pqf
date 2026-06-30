@@ -5,6 +5,7 @@ from engine.rubric import eval_condition, evaluate_rubric
 
 # --- Numeric comparisons ---
 
+
 def test_gte_true():
     assert eval_condition({"coverage_pct": 90}, "coverage_pct >= 90") is True
 
@@ -47,6 +48,7 @@ def test_neq_numeric():
 
 # --- Boolean comparisons ---
 
+
 def test_bool_eq_true_passes():
     assert eval_condition({"latest_build_passing": True}, "latest_build_passing == true") is True
 
@@ -65,6 +67,7 @@ def test_bool_neq():
 
 # --- Missing key ---
 
+
 def test_missing_key_returns_false():
     assert eval_condition({}, "coverage_pct >= 70") is False
 
@@ -74,6 +77,7 @@ def test_missing_key_bool_returns_false():
 
 
 # --- Invalid condition ---
+
 
 def test_invalid_condition_raises_value_error():
     with pytest.raises(ValueError, match="Invalid condition"):

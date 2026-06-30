@@ -4,11 +4,7 @@ from scorers.support_engagement.logic import compute_metrics
 
 _GITHUB_API = "https://api.github.com"
 
-_PRODUCT = {
-    "components": {
-        "foundational": [{"github_repo": "canonical/synapse-operator"}]
-    }
-}
+_PRODUCT = {"components": {"foundational": [{"github_repo": "canonical/synapse-operator"}]}}
 
 _ISSUES = [
     {
@@ -78,7 +74,7 @@ def test_avg_triage_days_computed_correctly():
         status=200,
     )
     result = compute_metrics(_PRODUCT, "token")
-    assert result["avg_triage_days"] == 3.0   # (2 + 4) / 2
+    assert result["avg_triage_days"] == 3.0  # (2 + 4) / 2
     assert result["avg_pr_review_days"] == 1.0
 
 
@@ -106,8 +102,14 @@ def test_returns_zero_when_no_issues():
 @responses.activate
 def test_skips_pr_issues_in_issue_list():
     """Issues that are actually PRs (have pull_request key) are excluded."""
-    issues = [{"number": 5, "user": {"login": "a"}, "created_at": "2026-06-01T00:00:00Z",
-               "pull_request": {"url": "https://..."}}]
+    issues = [
+        {
+            "number": 5,
+            "user": {"login": "a"},
+            "created_at": "2026-06-01T00:00:00Z",
+            "pull_request": {"url": "https://..."},
+        }
+    ]
     responses.add(
         responses.GET,
         f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
@@ -128,19 +130,33 @@ def test_skips_pr_issues_in_issue_list():
 
 @responses.activate
 def test_zero_when_issue_has_no_comments():
-    issues = [{"number": 3, "user": {"login": "reporter"}, "created_at": "2026-06-01T00:00:00Z",
-               "pull_request": None}]
+    issues = [
+        {
+            "number": 3,
+            "user": {"login": "reporter"},
+            "created_at": "2026-06-01T00:00:00Z",
+            "pull_request": None,
+        }
+    ]
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
-        json=issues, status=200, match_querystring=False,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
+        json=issues,
+        status=200,
+        match_querystring=False,
     )
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/issues/3/comments",
-        json=[], status=200,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/issues/3/comments",
+        json=[],
+        status=200,
     )
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
-        json=[], status=200, match_querystring=False,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
+        json=[],
+        status=200,
+        match_querystring=False,
     )
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_triage_days"] == 0.0
@@ -154,17 +170,24 @@ def test_returns_zeros_when_no_components():
 @responses.activate
 def test_pr_review_zero_when_no_reviews():
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
-        json=[], status=200, match_querystring=False,
-    )
-    responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
-        json=[{"number": 20, "created_at": "2026-06-01T00:00:00Z"}], status=200,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
+        json=[],
+        status=200,
         match_querystring=False,
     )
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls/20/reviews",
-        json=[], status=200,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
+        json=[{"number": 20, "created_at": "2026-06-01T00:00:00Z"}],
+        status=200,
+        match_querystring=False,
+    )
+    responses.add(
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls/20/reviews",
+        json=[],
+        status=200,
     )
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_pr_review_days"] == 0.0
@@ -183,22 +206,34 @@ def test_aggregates_multiple_repos():
     }
     for repo in ("canonical/synapse-operator", "canonical/postgresql-k8s-operator"):
         responses.add(
-            responses.GET, f"{_GITHUB_API}/repos/{repo}/issues",
-            json=[{"number": 1, "user": {"login": "a"}, "created_at": "2026-06-01T00:00:00Z",
-                   "pull_request": None}],
-            status=200, match_querystring=False,
+            responses.GET,
+            f"{_GITHUB_API}/repos/{repo}/issues",
+            json=[
+                {
+                    "number": 1,
+                    "user": {"login": "a"},
+                    "created_at": "2026-06-01T00:00:00Z",
+                    "pull_request": None,
+                }
+            ],
+            status=200,
+            match_querystring=False,
         )
         responses.add(
-            responses.GET, f"{_GITHUB_API}/repos/{repo}/issues/1/comments",
+            responses.GET,
+            f"{_GITHUB_API}/repos/{repo}/issues/1/comments",
             json=[{"user": {"login": "b"}, "created_at": "2026-06-03T00:00:00Z"}],
             status=200,
         )
         responses.add(
-            responses.GET, f"{_GITHUB_API}/repos/{repo}/pulls",
-            json=[], status=200, match_querystring=False,
+            responses.GET,
+            f"{_GITHUB_API}/repos/{repo}/pulls",
+            json=[],
+            status=200,
+            match_querystring=False,
         )
     result = compute_metrics(product, "token")
-    assert result["avg_triage_days"] == 2.0   # both repos have 2-day triage
+    assert result["avg_triage_days"] == 2.0  # both repos have 2-day triage
 
 
 @responses.activate
@@ -210,16 +245,24 @@ def test_excludes_prs_outside_90day_window():
         {"number": 2, "created_at": "2026-06-01T00:00:00Z"},  # recent
     ]
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
-        json=[], status=200, match_querystring=False,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
+        json=[],
+        status=200,
+        match_querystring=False,
     )
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
-        json=pulls, status=200, match_querystring=False,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
+        json=pulls,
+        status=200,
+        match_querystring=False,
     )
     responses.add(
-        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls/2/reviews",
-        json=[{"submitted_at": "2026-06-02T00:00:00Z"}], status=200,
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls/2/reviews",
+        json=[{"submitted_at": "2026-06-02T00:00:00Z"}],
+        status=200,
     )
     result = compute_metrics(_PRODUCT, "token")
     # Only PR #2 should be considered (PR #1 is outside 90-day window)
