@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T21:10:22.810726+00:00",
+  "generated_at": "2026-06-30T22:39:05.578115+00:00",
   "products": [
     {
       "id": "discourse",
@@ -10,6 +10,7 @@
       "current_medal": "unrated",
       "squad": "americas",
       "documentation_url": "https://charmhub.io/discourse-k8s",
+      "allure_report_url": "https://canonical.github.io/discourse-k8s-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -119,6 +120,7 @@
       "current_medal": "unrated",
       "squad": "emea",
       "documentation_url": "https://charmhub.io/indico",
+      "allure_report_url": "https://canonical.github.io/indico-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -223,6 +225,7 @@
       "current_medal": "unrated",
       "squad": "apac",
       "documentation_url": "https://charmhub.io/jenkins-k8s/docs",
+      "allure_report_url": "https://canonical.github.io/jenkins-k8s-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -307,6 +310,7 @@
       "current_medal": "unrated",
       "squad": "americas",
       "documentation_url": "https://charmhub.io/synapse",
+      "allure_report_url": "https://canonical.github.io/synapse-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -418,6 +422,7 @@
       "current_medal": "unrated",
       "squad": "americas",
       "documentation_url": "https://charmhub.io/mattermost-k8s",
+      "allure_report_url": "https://canonical.github.io/mattermost-k8s-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -515,6 +520,7 @@
       "current_medal": "unrated",
       "squad": "emea",
       "documentation_url": "https://netboxlabs.com/",
+      "allure_report_url": "https://canonical.github.io/netbox-k8s-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -587,6 +593,7 @@
       "current_medal": "unrated",
       "squad": "emea",
       "documentation_url": "https://wazuh.com/",
+      "allure_report_url": "https://canonical.github.io/wazuh-server-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -696,6 +703,7 @@
       "current_medal": "unrated",
       "squad": "apac",
       "documentation_url": "https://charmhub.io/wordpress-k8s",
+      "allure_report_url": "https://canonical.github.io/wordpress-k8s-operator/_latest",
       "components": {
         "foundational": [
           {
@@ -794,6 +802,20 @@
         "latest_build_passing": {
           "label": "Latest build passing",
           "description": "Whether the most recent CI run on the default branch is green.",
+          "type": "boolean",
+          "range": "",
+          "ai_assisted": false
+        },
+        "uses_ops_testing": {
+          "label": "Uses ops.testing (no Harness)",
+          "description": "No references to the deprecated ops.testing Harness class found in test files. Checks via GitHub Search API.",
+          "type": "boolean",
+          "range": "",
+          "ai_assisted": false
+        },
+        "uses_jubilant": {
+          "label": "Uses Jubilant",
+          "description": "Integration tests import the Jubilant framework. Canonical standard for charm integration testing.",
           "type": "boolean",
           "range": "",
           "ai_assisted": false
@@ -946,6 +968,13 @@
           "type": "boolean",
           "range": "",
           "ai_assisted": false
+        },
+        "branch_protection_required_checks": {
+          "label": "Branch protection with required checks",
+          "description": "The default branch has at least one required status check configured in branch protection rules, preventing merging of broken code.",
+          "type": "boolean",
+          "range": "",
+          "ai_assisted": false
         }
       },
       "medals": {
@@ -978,6 +1007,20 @@
           "description": "Average number of days between PR opening and first review, over the last 90 days.",
           "type": "number",
           "range": "\u2265 0 days",
+          "ai_assisted": false
+        },
+        "has_squad_topic": {
+          "label": "Squad GitHub topic",
+          "description": "The primary component repository has a GitHub topic matching 'squad-*', enabling automated ownership discovery and routing.",
+          "type": "boolean",
+          "range": "",
+          "ai_assisted": false
+        },
+        "has_jira_sync": {
+          "label": "Jira sync configured",
+          "description": "A .github/.jira_sync_config.yaml file exists in the primary component repository, enabling GitHub-to-Jira issue synchronisation.",
+          "type": "boolean",
+          "range": "",
           "ai_assisted": false
         }
       },

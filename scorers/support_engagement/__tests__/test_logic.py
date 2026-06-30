@@ -1,6 +1,11 @@
+import requests
 import responses
 
-from scorers.support_engagement.logic import compute_metrics
+from scorers.support_engagement.logic import (
+    _has_jira_sync,
+    _has_squad_topic,
+    compute_metrics,
+)
 
 _GITHUB_API = "https://api.github.com"
 
@@ -39,6 +44,25 @@ _REVIEWS_PR_10 = [
 ]
 
 
+def _mock_repo_metadata(
+    owner_repo: str,
+    topics: list[str] | None = None,
+    jira_sync: bool = False,
+):
+    responses.add(
+        responses.GET,
+        f"{_GITHUB_API}/repos/{owner_repo}/topics",
+        json={"names": topics or []},
+        status=200,
+    )
+    responses.add(
+        responses.GET,
+        f"{_GITHUB_API}/repos/{owner_repo}/contents/.github/.jira_sync_config.yaml",
+        json={} if jira_sync else {"message": "Not Found"},
+        status=200 if jira_sync else 404,
+    )
+
+
 @responses.activate
 def test_avg_triage_days_computed_correctly():
     responses.add(
@@ -73,9 +97,16 @@ def test_avg_triage_days_computed_correctly():
         json=_REVIEWS_PR_10,
         status=200,
     )
+    _mock_repo_metadata(
+        "canonical/synapse-operator",
+        topics=["squad-americas", "product-matrix"],
+        jira_sync=True,
+    )
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_triage_days"] == 3.0  # (2 + 4) / 2
     assert result["avg_pr_review_days"] == 1.0
+    assert result["has_squad_topic"] is True
+    assert result["has_jira_sync"] is True
 
 
 @responses.activate
@@ -94,9 +125,12 @@ def test_returns_zero_when_no_issues():
         status=200,
         match_querystring=False,
     )
+    _mock_repo_metadata("canonical/synapse-operator")
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_triage_days"] == 0.0
     assert result["avg_pr_review_days"] == 0.0
+    assert result["has_squad_topic"] is False
+    assert result["has_jira_sync"] is False
 
 
 @responses.activate
@@ -124,8 +158,11 @@ def test_skips_pr_issues_in_issue_list():
         status=200,
         match_querystring=False,
     )
+    _mock_repo_metadata("canonical/synapse-operator")
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_triage_days"] == 0.0
+    assert result["has_squad_topic"] is False
+    assert result["has_jira_sync"] is False
 
 
 @responses.activate
@@ -158,13 +195,49 @@ def test_zero_when_issue_has_no_comments():
         status=200,
         match_querystring=False,
     )
+    _mock_repo_metadata("canonical/synapse-operator")
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_triage_days"] == 0.0
+    assert result["has_squad_topic"] is False
+    assert result["has_jira_sync"] is False
+
+
+@responses.activate
+def test_has_squad_topic_true():
+    responses.add(
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/test-repo/topics",
+        json={"names": ["squad-americas", "product-matrix"]},
+        status=200,
+    )
+    session = requests.Session()
+    session.headers.update({"Authorization": "Bearer test"})
+    result = _has_squad_topic("canonical/test-repo", session)
+    assert result is True
+
+
+@responses.activate
+def test_has_jira_sync_true():
+    responses.add(
+        responses.GET,
+        f"{_GITHUB_API}/repos/canonical/test-repo/contents/.github/.jira_sync_config.yaml",
+        json={},
+        status=200,
+    )
+    session = requests.Session()
+    session.headers.update({"Authorization": "Bearer test"})
+    result = _has_jira_sync("canonical/test-repo", session)
+    assert result is True
 
 
 def test_returns_zeros_when_no_components():
     result = compute_metrics({}, "token")
-    assert result == {"avg_triage_days": 0.0, "avg_pr_review_days": 0.0}
+    assert result == {
+        "avg_triage_days": 0.0,
+        "avg_pr_review_days": 0.0,
+        "has_squad_topic": False,
+        "has_jira_sync": False,
+    }
 
 
 @responses.activate
@@ -189,8 +262,11 @@ def test_pr_review_zero_when_no_reviews():
         json=[],
         status=200,
     )
+    _mock_repo_metadata("canonical/synapse-operator")
     result = compute_metrics(_PRODUCT, "token")
     assert result["avg_pr_review_days"] == 0.0
+    assert result["has_squad_topic"] is False
+    assert result["has_jira_sync"] is False
 
 
 @responses.activate
@@ -232,8 +308,11 @@ def test_aggregates_multiple_repos():
             status=200,
             match_querystring=False,
         )
+        _mock_repo_metadata(repo)
     result = compute_metrics(product, "token")
     assert result["avg_triage_days"] == 2.0  # both repos have 2-day triage
+    assert result["has_squad_topic"] is False
+    assert result["has_jira_sync"] is False
 
 
 @responses.activate
@@ -264,6 +343,9 @@ def test_excludes_prs_outside_90day_window():
         json=[{"submitted_at": "2026-06-02T00:00:00Z"}],
         status=200,
     )
+    _mock_repo_metadata("canonical/synapse-operator")
     result = compute_metrics(_PRODUCT, "token")
     # Only PR #2 should be considered (PR #1 is outside 90-day window)
     assert result["avg_pr_review_days"] == 1.0
+    assert result["has_squad_topic"] is False
+    assert result["has_jira_sync"] is False

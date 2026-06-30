@@ -24,6 +24,37 @@ def _parse_dt(iso_str: str) -> datetime:
     return datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
 
 
+def _primary_repo(product: dict[str, Any]) -> str | None:
+    components = product.get("components", {})
+    for cat in ("foundational", "feature", "auxiliary"):
+        items = components.get(cat, [])
+        if items:
+            return items[0].get("github_repo")
+    return None
+
+
+def _has_squad_topic(owner_repo: str, session: requests.Session) -> bool:
+    """True if the repo has a GitHub topic matching 'squad-*'."""
+    resp = session.get(
+        f"{_GITHUB_API}/repos/{owner_repo}/topics",
+        headers={"Accept": "application/vnd.github.mercy-preview+json"},
+        timeout=15,
+    )
+    if not resp.ok:
+        return False
+    topics = resp.json().get("names", [])
+    return any(topic.startswith("squad-") for topic in topics)
+
+
+def _has_jira_sync(owner_repo: str, session: requests.Session) -> bool:
+    """True if .github/.jira_sync_config.yaml exists in the repo."""
+    resp = session.get(
+        f"{_GITHUB_API}/repos/{owner_repo}/contents/.github/.jira_sync_config.yaml",
+        timeout=15,
+    )
+    return resp.status_code == 200
+
+
 def _compute_avg_triage_days(
     issues: list[dict], session: requests.Session, owner_repo: str
 ) -> float:
@@ -87,8 +118,14 @@ def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any
     """
     foundational = product.get("components", {}).get("foundational", [])
     if not foundational:
-        return {"avg_triage_days": 0.0, "avg_pr_review_days": 0.0}
+        return {
+            "avg_triage_days": 0.0,
+            "avg_pr_review_days": 0.0,
+            "has_squad_topic": False,
+            "has_jira_sync": False,
+        }
 
+    primary = _primary_repo(product)
     session = _make_github_session(github_token)
     since = (datetime.now(UTC) - timedelta(days=_LOOKBACK_DAYS)).isoformat()
 
@@ -129,5 +166,12 @@ def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any
 
     avg_triage = round(sum(all_issue_times) / len(all_issue_times), 1) if all_issue_times else 0.0
     avg_pr = round(sum(all_pr_times) / len(all_pr_times), 1) if all_pr_times else 0.0
+    squad_topic = _has_squad_topic(primary, session) if primary else False
+    jira_sync = _has_jira_sync(primary, session) if primary else False
 
-    return {"avg_triage_days": avg_triage, "avg_pr_review_days": avg_pr}
+    return {
+        "avg_triage_days": avg_triage,
+        "avg_pr_review_days": avg_pr,
+        "has_squad_topic": squad_topic,
+        "has_jira_sync": jira_sync,
+    }

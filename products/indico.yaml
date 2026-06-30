@@ -10,7 +10,7 @@ ownership:
   users:
     - "Internal Canonical"
 documentation_url: "https://charmhub.io/indico"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/indico-operator/_latest"
 components:
   foundational:
     - id: indico-operator

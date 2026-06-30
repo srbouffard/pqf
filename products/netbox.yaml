@@ -10,7 +10,7 @@ ownership:
   users:
     - "IS Network team"
 documentation_url: "https://netboxlabs.com/"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/netbox-k8s-operator/_latest"
 components:
   foundational:
     - id: netbox-k8s

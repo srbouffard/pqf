@@ -10,7 +10,7 @@ ownership:
   users:
     - "Security Operations Team"
 documentation_url: "https://wazuh.com/"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/wazuh-server-operator/_latest"
 components:
   foundational:
     - id: wazuh-server

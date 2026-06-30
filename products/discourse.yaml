@@ -12,7 +12,7 @@ ownership:
     - "Internal Canonical"
     - "Ubuntu community"
 documentation_url: "https://charmhub.io/discourse-k8s"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/discourse-k8s-operator/_latest"
 components:
   foundational:
     - id: discourse-k8s

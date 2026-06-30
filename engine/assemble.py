@@ -66,6 +66,7 @@ def _result_to_dict(result, product: dict) -> dict:
         "current_medal": result.current_medal.value,
         "squad": product.get("ownership", {}).get("squad", ""),
         "documentation_url": product.get("documentation_url", ""),
+        "allure_report_url": product.get("allure_report_url", ""),
         "components": product.get("components", {}),
         "dimensions": {
             name: {

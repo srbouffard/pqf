@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -15,7 +16,8 @@ def main() -> int:
     args = parser.parse_args()
 
     product = yaml.safe_load(Path(args.product_yaml).read_text())
-    result = compute_metrics(product)
+    github_token = os.environ.get("GITHUB_TOKEN")
+    result = compute_metrics(product, github_token=github_token)
     print(json.dumps(result))
     return 0
 

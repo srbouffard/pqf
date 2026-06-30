@@ -23,6 +23,14 @@ dimensions:
         type: boolean
         label: "Latest build passing"
         description: "Whether the most recent CI run on the default branch is green."
+      uses_ops_testing:
+        type: boolean
+        label: "Uses ops.testing (no Harness)"
+        description: "No references to the deprecated ops.testing Harness class found in test files. Checks via GitHub Search API."
+      uses_jubilant:
+        type: boolean
+        label: "Uses Jubilant"
+        description: "Integration tests import the Jubilant framework. Canonical standard for charm integration testing."
     medals:
       bronze:
         - coverage_pct >= 70
@@ -115,6 +123,10 @@ dimensions:
         type: boolean
         label: "CodeQL enabled"
         description: "At least one foundational repository has a GitHub Actions workflow that references github/codeql-action, enabling static analysis."
+      branch_protection_required_checks:
+        type: boolean
+        label: "Branch protection with required checks"
+        description: "The default branch has at least one required status check configured in branch protection rules, preventing merging of broken code."
     medals:
       silver:
         - dependabot_enabled == true
@@ -137,6 +149,14 @@ dimensions:
         range: "≥ 0 days"
         label: "Avg. PR review time"
         description: "Average number of days between PR opening and first review, over the last 90 days."
+      has_squad_topic:
+        type: boolean
+        label: "Squad GitHub topic"
+        description: "The primary component repository has a GitHub topic matching 'squad-*', enabling automated ownership discovery and routing."
+      has_jira_sync:
+        type: boolean
+        label: "Jira sync configured"
+        description: "A .github/.jira_sync_config.yaml file exists in the primary component repository, enabling GitHub-to-Jira issue synchronisation."
     medals:
       silver:
         - avg_triage_days <= 5

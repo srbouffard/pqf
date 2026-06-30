@@ -18,6 +18,16 @@ def _make_github_session(github_token: str) -> requests.Session:
     return session
 
 
+def _primary_repo(product: dict[str, Any]) -> str | None:
+    """Return '{owner}/{repo}' for the primary component, or None."""
+    components = product.get("components", {})
+    for category in ("foundational", "feature", "auxiliary"):
+        items = components.get(category, [])
+        if items:
+            return items[0].get("github_repo")
+    return None
+
+
 def _fetch_workflow_contents(owner_repo: str, github_token: str) -> list[str]:
     """Fetch text contents of all workflow YAML files in .github/workflows/."""
     session = _make_github_session(github_token)
@@ -42,6 +52,26 @@ def _fetch_workflow_contents(owner_repo: str, github_token: str) -> list[str]:
     return contents
 
 
+def _has_branch_protection_required_checks(owner_repo: str, github_token: str) -> bool:
+    """Return True if the default branch has ≥1 required status check."""
+    session = _make_github_session(github_token)
+    repo_resp = session.get(f"{_GITHUB_API}/repos/{owner_repo}", timeout=15)
+    if not repo_resp.ok:
+        return False
+    default_branch = repo_resp.json().get("default_branch", "main")
+    prot_resp = session.get(
+        f"{_GITHUB_API}/repos/{owner_repo}/branches/{default_branch}/protection",
+        timeout=15,
+    )
+    if not prot_resp.ok:
+        return False
+    data = prot_resp.json()
+    checks = data.get("required_status_checks", {})
+    contexts = checks.get("contexts", [])
+    strict_checks = checks.get("checks", [])
+    return len(contexts) > 0 or len(strict_checks) > 0
+
+
 def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any]:
     """
     Check GitHub Security features for all foundational component repos.
@@ -51,6 +81,7 @@ def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any
     """
     foundational = product.get("components", {}).get("foundational", [])
     repos = [c["github_repo"] for c in foundational if "github_repo" in c]
+    primary = _primary_repo(product)
 
     dependabot_enabled = False
     codeql_enabled = False
@@ -67,7 +98,12 @@ def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any
             if "github/codeql-action" in content:
                 codeql_enabled = True
 
+    branch_protection = (
+        _has_branch_protection_required_checks(primary, github_token) if primary else False
+    )
+
     return {
         "dependabot_enabled": dependabot_enabled,
         "codeql_enabled": codeql_enabled,
+        "branch_protection_required_checks": branch_protection,
     }

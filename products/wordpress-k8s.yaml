@@ -10,7 +10,7 @@ ownership:
   users:
     - "Web content teams"
 documentation_url: "https://charmhub.io/wordpress-k8s"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/wordpress-k8s-operator/_latest"
 components:
   foundational:
     - id: wordpress-k8s

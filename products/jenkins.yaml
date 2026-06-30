@@ -10,7 +10,7 @@ ownership:
   users:
     - "Development teams"
 documentation_url: "https://charmhub.io/jenkins-k8s/docs"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/jenkins-k8s-operator/_latest"
 components:
   foundational:
     - id: jenkins-k8s

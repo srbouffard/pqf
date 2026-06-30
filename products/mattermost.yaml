@@ -10,7 +10,7 @@ ownership:
   users:
     - "All Canonical staff"
 documentation_url: "https://charmhub.io/mattermost-k8s"
-allure_report_url: ""
+allure_report_url: "https://canonical.github.io/mattermost-k8s-operator/_latest"
 components:
   foundational:
     - id: mattermost-k8s
