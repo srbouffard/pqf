@@ -2,16 +2,46 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
 import { usePortfolio } from '../hooks/usePortfolio'
 import MedalBadge from '../components/MedalBadge'
-import DriftChip from '../components/DriftChip'
 import LoadingSpinner from '../components/LoadingSpinner'
-import type { Medal } from '../types'
+import type { DriftInfo, Medal } from '../types'
 
 const MEDAL_ORDER: Record<Medal, number> = { gold: 3, silver: 2, bronze: 1, unrated: 0 }
+const SQUAD_LABELS: Record<string, string> = {
+  americas: 'AMER',
+  emea: 'EMEA',
+  apac: 'APAC',
+}
+
+type SortField = 'name' | 'current_medal' | 'target_medal'
+
+function DriftIndicator({ drift }: { drift: DriftInfo | null }) {
+  if (!drift) return null
+
+  const deadline = new Date(drift.deadline).toISOString().slice(0, 10)
+
+  if (drift.status === 'overdue') {
+    return (
+      <span title={`Overdue since ${deadline}`} style={{ fontSize: '1rem', cursor: 'default' }}>
+        🔴
+      </span>
+    )
+  }
+
+  return (
+    <span title={`Remediating · deadline ${deadline}`} style={{ fontSize: '1rem', cursor: 'default' }}>
+      🟡
+    </span>
+  )
+}
+
+function squadLabel(squad: string): string {
+  return SQUAD_LABELS[squad?.toLowerCase()] ?? squad?.toUpperCase() ?? '—'
+}
 
 export default function Overview() {
   const { data: portfolio, isLoading, isError, error } = usePortfolio()
   const [search, setSearch] = useState('')
-  const [sortField, setSortField] = useState<'name' | 'current_medal' | 'lifecycle'>('name')
+  const [sortField, setSortField] = useState<SortField>('name')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 
   const products = useMemo(() => {
@@ -25,7 +55,8 @@ export default function Overview() {
       if (sortField === 'name') cmp = a.name.localeCompare(b.name)
       else if (sortField === 'current_medal')
         cmp = MEDAL_ORDER[a.current_medal] - MEDAL_ORDER[b.current_medal]
-      else if (sortField === 'lifecycle') cmp = a.lifecycle.localeCompare(b.lifecycle)
+      else if (sortField === 'target_medal')
+        cmp = MEDAL_ORDER[a.target_medal] - MEDAL_ORDER[b.target_medal]
       return sortDir === 'asc' ? cmp : -cmp
     })
   }, [portfolio, search, sortField, sortDir])
@@ -53,12 +84,12 @@ export default function Overview() {
     ? Object.keys(portfolio.dimensions_meta)
     : []
 
-  function toggleSort(field: typeof sortField) {
+  function toggleSort(field: SortField) {
     if (sortField === field) setSortDir(d => (d === 'asc' ? 'desc' : 'asc'))
     else { setSortField(field); setSortDir('asc') }
   }
 
-  function getAriaSort(field: typeof sortField): "none" | "ascending" | "descending" {
+  function getAriaSort(field: SortField): "none" | "ascending" | "descending" {
     if (sortField !== field) return 'none'
     return sortDir === 'asc' ? 'ascending' : 'descending'
   }
@@ -119,14 +150,14 @@ export default function Overview() {
                 >
                   Product
                 </th>
+                <th style={{ width: '10%' }}>Squad</th>
                 <th
-                  aria-sort={getAriaSort('lifecycle')}
-                  onClick={() => toggleSort('lifecycle')}
-                  style={{ cursor: 'pointer', width: '10%' }}
+                  aria-sort={getAriaSort('target_medal')}
+                  onClick={() => toggleSort('target_medal')}
+                  style={{ cursor: 'pointer', width: '15%' }}
                 >
-                  Lifecycle
+                  Target
                 </th>
-                <th style={{ width: '15%' }}>Target</th>
                 <th
                   aria-sort={getAriaSort('current_medal')}
                   onClick={() => toggleSort('current_medal')}
@@ -149,10 +180,22 @@ export default function Overview() {
                     <td>
                       <Link to={`/products/${product.id}`}>{product.name}</Link>
                     </td>
-                    <td>{product.lifecycle}</td>
+                    <td>
+                      <span
+                        style={{
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                          color: '#666',
+                        }}
+                      >
+                        {squadLabel(product.squad)}
+                      </span>
+                    </td>
                     <td><MedalBadge medal={product.target_medal} size="small" /></td>
                     <td><MedalBadge medal={product.current_medal} size="small" /></td>
-                    <td><DriftChip drift={worstDrift} /></td>
+                    <td><DriftIndicator drift={worstDrift} /></td>
                     <td>
                       <Link to={`/products/${product.id}`} className="p-button is-small">View</Link>
                     </td>

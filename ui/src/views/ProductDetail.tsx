@@ -5,6 +5,32 @@ import DriftChip from '../components/DriftChip'
 import MetricsList from '../components/MetricsList'
 import LoadingSpinner from '../components/LoadingSpinner'
 
+const SQUAD_TEAMS: Record<string, { label: string; url: string }> = {
+  americas: { label: 'AMER', url: 'https://github.com/orgs/canonical/teams/platform-engineering-amer' },
+  emea: { label: 'EMEA', url: 'https://github.com/orgs/canonical/teams/platform-engineering-emea' },
+  apac: { label: 'APAC', url: 'https://github.com/orgs/canonical/teams/platform-engineering-apac' },
+}
+
+function parseCriteria(criteria: string[]): Record<string, { operator: string; value: number | boolean }> {
+  const result: Record<string, { operator: string; value: number | boolean }> = {}
+
+  for (const criterion of criteria) {
+    const match = criterion.match(/^(\w+)\s*(>=|<=|==|>|<)\s*(.+)$/)
+    if (!match) continue
+
+    const [, metric, operator, rawValue] = match
+    let value: number | boolean
+
+    if (rawValue === 'true') value = true
+    else if (rawValue === 'false') value = false
+    else value = parseFloat(rawValue)
+
+    result[metric] = { operator, value }
+  }
+
+  return result
+}
+
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>()
   const { data: portfolio, isLoading, isError, error } = usePortfolio()
@@ -69,7 +95,16 @@ export default function ProductDetail() {
             </div>
             <div>
               <span className="u-text--muted" style={{ fontSize: '0.75rem', display: 'block', marginBottom: '0.25rem' }}>SQUAD</span>
-              <span>{product.squad}</span>
+              {(() => {
+                const team = SQUAD_TEAMS[product.squad?.toLowerCase()]
+                if (!team) return <span>{product.squad}</span>
+
+                return (
+                  <a href={team.url} target="_blank" rel="noreferrer" className="p-chip" style={{ textDecoration: 'none', fontSize: '0.875rem', padding: '0.2rem 0.6rem' }}>
+                    {team.label}
+                  </a>
+                )
+              })()}
             </div>
           </div>
         </div>
@@ -81,40 +116,44 @@ export default function ProductDetail() {
             <table style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}>
               <colgroup>
                 <col style={{ width: '22%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '14%' }} />
-                <col style={{ width: '44%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '18%' }} />
+                <col style={{ width: '48%' }} />
               </colgroup>
               <thead>
                 <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Dimension</th>
-                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Target</th>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Current</th>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Drift</th>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Evidence</th>
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(product.dimensions).map(([dim, entry], idx) => (
-                  <tr key={dim} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
-                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                      <Link to={`/dimensions/${dim}`} style={{ fontWeight: 500 }}>{dim.replace(/_/g, ' ')}</Link>
-                    </td>
-                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                      <MedalBadge medal={entry.target} size="small" />
-                    </td>
-                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                      <MedalBadge medal={entry.medal} size="small" />
-                    </td>
-                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                      <DriftChip drift={entry.drift} />
-                    </td>
-                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                      <MetricsList metrics={entry.metrics} />
-                    </td>
-                  </tr>
-                ))}
+                {Object.entries(product.dimensions).map(([dim, entry], idx) => {
+                  const dimMeta = portfolio.dimensions_meta[dim]
+                  const targetTier = product.target_medal
+                  const targetCriteria = targetTier === 'bronze' || targetTier === 'silver' || targetTier === 'gold'
+                    ? dimMeta?.medals?.[targetTier]?.criteria ?? []
+                    : []
+                  const targetThresholds = parseCriteria(targetCriteria)
+
+                  return (
+                    <tr key={dim} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <Link to={`/dimensions/${dim}`} style={{ fontWeight: 500 }}>{dim.replace(/_/g, ' ')}</Link>
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <MedalBadge medal={entry.medal} size="small" />
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <DriftChip drift={entry.drift} />
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <MetricsList metrics={entry.metrics} thresholds={targetThresholds} metaOutputs={dimMeta?.outputs} />
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

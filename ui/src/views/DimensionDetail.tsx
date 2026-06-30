@@ -1,12 +1,29 @@
 import { useParams, Link } from 'react-router'
 import { usePortfolio } from '../hooks/usePortfolio'
 import MedalBadge from '../components/MedalBadge'
-import DriftChip from '../components/DriftChip'
 import LoadingSpinner from '../components/LoadingSpinner'
-import type { Medal } from '../types'
+import type { DriftInfo, Medal } from '../types'
 
 const MEDAL_ORDER: Record<Medal, number> = { gold: 3, silver: 2, bronze: 1, unrated: 0 }
 const TIER_LABELS = ['gold', 'silver', 'bronze'] as const
+
+function parseCriterionMetric(criterion: string): string {
+  return criterion.split(/\s+/)[0]
+}
+
+function renderDriftDeadline(drift: DriftInfo | null) {
+  if (drift === null) {
+    return <span style={{ color: '#0e8420', fontWeight: 600 }}>✓</span>
+  }
+
+  const deadline = drift.deadline.slice(0, 10)
+
+  if (drift.status === 'overdue') {
+    return <span>🔴 Overdue · {deadline}</span>
+  }
+
+  return <span>🟡 Remediating · {deadline}</span>
+}
 
 export default function DimensionDetail() {
   const { id } = useParams<{ id: string }>()
@@ -72,11 +89,28 @@ export default function DimensionDetail() {
                       </td>
                       <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
                         <ul className="p-list" style={{ margin: 0 }}>
-                          {crit.criteria.map((c: string, i: number) => (
-                            <li key={i} className="p-list__item">
-                              <code>{c}</code>
-                            </li>
-                          ))}
+                          {crit.criteria.map((c: string, i: number) => {
+                            const metricKey = parseCriterionMetric(c)
+                            const outputMeta = meta.outputs?.[metricKey]
+
+                            return (
+                              <li key={i} className="p-list__item">
+                                {outputMeta ? (
+                                  <>
+                                    <div>
+                                      <strong>{outputMeta.label}</strong>{' '}
+                                      <code style={{ fontSize: '0.8125rem' }}>{c}</code>
+                                    </div>
+                                    {outputMeta.description && (
+                                      <p className="u-text--muted" style={{ margin: '0.1rem 0 0', fontSize: '0.75rem' }}>{outputMeta.description}</p>
+                                    )}
+                                  </>
+                                ) : (
+                                  <code>{c}</code>
+                                )}
+                              </li>
+                            )
+                          })}
                         </ul>
                       </td>
                     </tr>
@@ -94,16 +128,14 @@ export default function DimensionDetail() {
             <table style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}>
               <colgroup>
                 <col style={{ width: '40%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
+                <col style={{ width: '25%' }} />
+                <col style={{ width: '35%' }} />
               </colgroup>
               <thead>
                 <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Product</th>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Medal</th>
-                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Target</th>
-                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Drift</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Drift / Deadline</th>
                 </tr>
               </thead>
               <tbody>
@@ -118,10 +150,7 @@ export default function DimensionDetail() {
                         <MedalBadge medal={entry.medal} size="small" />
                       </td>
                       <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                        <MedalBadge medal={entry.target} size="small" />
-                      </td>
-                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                        <DriftChip drift={entry.drift} />
+                        {renderDriftDeadline(entry.drift)}
                       </td>
                     </tr>
                   )

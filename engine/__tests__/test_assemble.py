@@ -6,18 +6,43 @@ from engine.assemble import _build_dimensions_meta, assemble_portfolio
 _DIMENSIONS = {
     "dimensions": {
         "test_verification": {
+            "label": "Test Verification",
+            "description": "Measures test breadth and reliability.",
+            "outputs": {
+                "coverage_pct": {
+                    "type": "number",
+                    "range": "0-100",
+                    "label": "Coverage",
+                    "description": "Source line coverage percentage.",
+                },
+                "stability_pct": "number",
+                "latest_build_passing": {
+                    "type": "boolean",
+                    "label": "Latest build passing",
+                    "description": "Whether the latest default branch build passed.",
+                },
+            },
             "medals": {
                 "bronze": ["coverage_pct >= 70", "latest_build_passing == true"],
                 "silver": ["coverage_pct >= 80"],
                 "gold": ["coverage_pct >= 90"],
-            }
+            },
         },
         "documentation": {
+            "label": "Documentation",
+            "description": "README and docs quality.",
+            "outputs": {
+                "has_readme": {
+                    "type": "boolean",
+                    "label": "README present",
+                    "description": "A README exists in the repo.",
+                }
+            },
             "medals": {
                 "bronze": ["has_readme == true"],
                 "silver": ["diataxis_coverage >= 4"],
                 "gold": ["style_linter_passing == true"],
-            }
+            },
         },
     }
 }
@@ -102,6 +127,23 @@ def test_dimensions_meta_structure():
     assert "test_verification" in meta
     assert "documentation" in meta
     tv = meta["test_verification"]
+    assert tv["label"] == "Test Verification"
+    assert tv["description"] == "Measures test breadth and reliability."
+    assert tv["outputs"] == {
+        "coverage_pct": {
+            "label": "Coverage",
+            "description": "Source line coverage percentage.",
+            "type": "number",
+            "range": "0-100",
+        },
+        "latest_build_passing": {
+            "label": "Latest build passing",
+            "description": "Whether the latest default branch build passed.",
+            "type": "boolean",
+            "range": "",
+        },
+    }
+    assert "stability_pct" not in tv["outputs"]
     assert "medals" in tv
     assert "bronze" in tv["medals"]
     assert "criteria" in tv["medals"]["bronze"]

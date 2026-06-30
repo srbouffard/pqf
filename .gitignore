@@ -13,3 +13,10 @@ ui/dist/
 ui/.playwright/
 ui/playwright-report/
 ui/test-results/
+
+# Local artifacts
+.playwright-mcp/
+*.png
+*.jpg
+*.jpeg
+initial_feedback.md

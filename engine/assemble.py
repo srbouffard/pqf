@@ -33,7 +33,24 @@ def _build_dimensions_meta(dimensions_config: dict) -> dict:
         medals_meta: dict = {}
         for tier, conditions in dim_config.get("medals", {}).items():
             medals_meta[tier] = {"criteria": conditions}
-        meta[dim_name] = {"medals": medals_meta}
+
+        outputs_meta = {}
+        for metric_name, metric_cfg in dim_config.get("outputs", {}).items():
+            if not isinstance(metric_cfg, dict):
+                continue
+            outputs_meta[metric_name] = {
+                "label": metric_cfg.get("label", metric_name),
+                "description": metric_cfg.get("description", ""),
+                "type": metric_cfg.get("type", "unknown"),
+                "range": metric_cfg.get("range", ""),
+            }
+
+        meta[dim_name] = {
+            "label": dim_config.get("label", dim_name.replace("_", " ").title()),
+            "description": dim_config.get("description", ""),
+            "outputs": outputs_meta,
+            "medals": medals_meta,
+        }
     return meta
 
 

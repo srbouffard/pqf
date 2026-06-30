@@ -5,11 +5,24 @@
 dimensions:
 
   test_verification:
+    label: "Test Verification"
+    description: "Measures the breadth and reliability of automated test coverage across the product's component repositories."
     scorer: scorers/test_verification/scorer.py
     outputs:
-      coverage_pct: number          # 0-100
-      stability_pct: number         # 0-100
-      latest_build_passing: boolean
+      coverage_pct:
+        type: number
+        range: "0–100"
+        label: "Coverage"
+        description: "Percentage of source lines covered by automated tests, averaged across foundational components."
+      stability_pct:
+        type: number
+        range: "0–100"
+        label: "Stability"
+        description: "Percentage of CI runs that passed over the last 30 days."
+      latest_build_passing:
+        type: boolean
+        label: "Latest build passing"
+        description: "Whether the most recent CI run on the default branch is green."
     medals:
       bronze:
         - coverage_pct >= 70
@@ -22,14 +35,35 @@ dimensions:
         - stability_pct >= 98
 
   documentation:
+    label: "Documentation"
+    description: "Evaluates the completeness and quality of product documentation against the Diátaxis framework and Canonical style guide."
     scorer: scorers/documentation/scorer.py
     outputs:
-      has_readme: boolean
-      has_contributing: boolean
-      has_security: boolean
-      diataxis_coverage: number      # 0-4: tutorial/howto/reference/explanation
-      style_linter_passing: boolean
-      links_passing: boolean
+      has_readme:
+        type: boolean
+        label: "README present"
+        description: "A README.md exists in the primary component repository."
+      has_contributing:
+        type: boolean
+        label: "CONTRIBUTING present"
+        description: "A CONTRIBUTING.md guide exists, helping contributors get started."
+      has_security:
+        type: boolean
+        label: "SECURITY present"
+        description: "A SECURITY.md file exists with vulnerability disclosure instructions."
+      diataxis_coverage:
+        type: number
+        range: "0–4"
+        label: "Diátaxis coverage"
+        description: "Number of Diátaxis doc types present (tutorial, how-to, reference, explanation). Scored by LLM analysis of the docs folder."
+      style_linter_passing:
+        type: boolean
+        label: "Style linter passing"
+        description: "Documentation passes the Canonical Vale style linter with no errors."
+      links_passing:
+        type: boolean
+        label: "Links passing"
+        description: "All hyperlinks in documentation resolve without HTTP errors."
     medals:
       bronze:
         - has_readme == true
@@ -43,14 +77,23 @@ dimensions:
         - diataxis_coverage == 4
 
   substrate_compat:
+    label: "Substrate Compatibility"
+    description: "Checks that the product supports current and next-generation Juju and Charmed Kubernetes versions."
     scorer: scorers/substrate_compat/scorer.py
     outputs:
-      supports_juju_3: boolean
-      supports_juju_4: boolean
-      supports_ck8s: boolean
+      supports_juju_3:
+        type: boolean
+        label: "Juju 3 support"
+        description: "The product's charms declare compatibility with Juju 3.x in their metadata."
+      supports_juju_4:
+        type: boolean
+        label: "Juju 4 support"
+        description: "The product's charms declare compatibility with Juju 4.x (next-gen)."
+      supports_ck8s:
+        type: boolean
+        label: "Charmed K8s support"
+        description: "The product is tested and documented for Charmed Kubernetes deployments."
     medals:
-      # No explicit bronze: failing silver/gold → implicit bronze fallback.
-      # A product on legacy substrates (e.g., Juju 2.9 only) lands at bronze.
       silver:
         - supports_juju_3 == true
       gold:
@@ -58,12 +101,19 @@ dimensions:
         - supports_ck8s == true
 
   security_ssdlc:
+    label: "Security / SSDLC"
+    description: "Verifies that the product follows the Secure Software Development Lifecycle practices mandated by Canonical's PSQF security baseline."
     scorer: scorers/security_ssdlc/scorer.py
     outputs:
-      dependabot_enabled: boolean    # .github/dependabot.yml present in any foundational repo
-      codeql_enabled: boolean        # any workflow references github/codeql-action
+      dependabot_enabled:
+        type: boolean
+        label: "Dependabot enabled"
+        description: "A .github/dependabot.yml file is present in at least one foundational component repository, enabling automated dependency updates."
+      codeql_enabled:
+        type: boolean
+        label: "CodeQL enabled"
+        description: "At least one foundational repository has a GitHub Actions workflow that references github/codeql-action, enabling static analysis."
     medals:
-      # No explicit bronze: any foundational repo presence → implicit bronze fallback.
       silver:
         - dependabot_enabled == true
       gold:
@@ -71,12 +121,21 @@ dimensions:
         - codeql_enabled == true
 
   support_engagement:
+    label: "Support Engagement"
+    description: "Measures how responsive the product team is to community and customer issues and pull requests."
     scorer: scorers/support_engagement/scorer.py
     outputs:
-      avg_triage_days: number        # average days to triage new issues
-      avg_pr_review_days: number     # average days to review external PRs
+      avg_triage_days:
+        type: number
+        range: "≥ 0 days"
+        label: "Avg. triage time"
+        description: "Average number of days between issue creation and first team response or label, over the last 90 days."
+      avg_pr_review_days:
+        type: number
+        range: "≥ 0 days"
+        label: "Avg. PR review time"
+        description: "Average number of days between PR opening and first review, over the last 90 days."
     medals:
-      # No explicit bronze: any level of support activity → implicit bronze.
       silver:
         - avg_triage_days <= 5
         - avg_pr_review_days <= 7

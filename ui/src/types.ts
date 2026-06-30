@@ -44,9 +44,17 @@ export interface MedalCriteria {
   criteria: string[]
 }
 
+export interface OutputMeta {
+  label: string
+  description: string
+  type: string
+  range: string
+}
+
 export interface DimensionMeta {
   label?: string
   description?: string
+  outputs?: Record<string, OutputMeta>
   medals: {
     bronze?: MedalCriteria
     silver?: MedalCriteria

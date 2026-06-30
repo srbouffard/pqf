@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router'
@@ -84,5 +84,52 @@ describe('Overview', () => {
   it('shows summary stat: 0% at target', () => {
     wrap(<Overview />)
     expect(screen.getByText(/0%/)).toBeInTheDocument()
+  })
+
+  it('shows compact squad and drift indicators in the products table', () => {
+    wrap(<Overview />)
+
+    expect(screen.getByRole('columnheader', { name: 'Squad' })).toBeInTheDocument()
+    expect(screen.queryByRole('columnheader', { name: 'Lifecycle' })).not.toBeInTheDocument()
+    expect(screen.getByText('AMER')).toBeInTheDocument()
+    expect(screen.getByTitle('Remediating · deadline 2026-07-01')).toBeInTheDocument()
+  })
+
+  it('sorts products by target medal when the target header is clicked', async () => {
+    vi.mocked(usePortfolio).mockReturnValue({
+      data: {
+        ...mockPortfolio,
+        products: [
+          {
+            ...mockPortfolio.products[0],
+            id: 'alpha',
+            name: 'Alpha',
+            target_medal: 'gold',
+          },
+          {
+            ...mockPortfolio.products[0],
+            id: 'zeta',
+            name: 'Zeta',
+            target_medal: 'bronze',
+          },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      error: null,
+    } as ReturnType<typeof usePortfolio>)
+
+    const user = userEvent.setup()
+    const { container } = wrap(<Overview />)
+    const productsTable = container.querySelectorAll('table')[0]
+
+    let productLinks = within(productsTable).getAllByRole('link', { name: /Alpha|Zeta/ })
+    expect(productLinks.map(link => link.textContent)).toEqual(['Alpha', 'Zeta'])
+
+    await user.click(screen.getByRole('columnheader', { name: 'Target' }))
+
+    productLinks = within(productsTable).getAllByRole('link', { name: /Alpha|Zeta/ })
+    expect(productLinks.map(link => link.textContent)).toEqual(['Zeta', 'Alpha'])
+    expect(screen.getByRole('columnheader', { name: 'Target' })).toHaveAttribute('aria-sort', 'ascending')
   })
 })

@@ -27,4 +27,22 @@ describe('MedalBadge', () => {
     const { container } = render(<MedalBadge medal="gold" />)
     expect(container.firstChild).toHaveStyle({ backgroundColor: '#C7962F' })
   })
+
+  it('uses a uniform centered width for default and small variants', () => {
+    const { rerender } = render(<MedalBadge medal="unrated" />)
+    expect(screen.getByText('Unrated')).toHaveStyle({
+      minWidth: '5.5rem',
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    })
+
+    rerender(<MedalBadge medal="unrated" size="small" />)
+    expect(screen.getByText('Unrated')).toHaveStyle({
+      minWidth: '5.5rem',
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    })
+  })
 })

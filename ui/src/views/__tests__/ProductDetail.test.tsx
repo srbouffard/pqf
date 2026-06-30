@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter, Routes, Route } from 'react-router'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
@@ -34,7 +34,17 @@ const mockPortfolio: Portfolio = {
     },
   ],
   dimensions_meta: {
-    test_verification: { medals: { bronze: { criteria: [] } } },
+    test_verification: {
+      outputs: {
+        coverage_pct: { label: 'Coverage', description: 'Unit test coverage', type: 'number', range: '0-100' },
+        latest_build_passing: { label: 'Build passing', description: 'Latest build status', type: 'boolean', range: 'true/false' },
+      },
+      medals: {
+        bronze: { criteria: ['coverage_pct >= 70'] },
+        silver: { criteria: ['coverage_pct >= 80'] },
+        gold: { criteria: ['coverage_pct >= 90', 'latest_build_passing == true'] },
+      },
+    },
   },
 }
 
@@ -74,6 +84,29 @@ describe('ProductDetail', () => {
   it('shows dimension row', () => {
     wrap('matrix')
     expect(screen.getByText('test verification')).toBeInTheDocument()
+  })
+
+  it('renders squad as a linked GitHub team badge', () => {
+    wrap('matrix')
+    const squadLink = screen.getByRole('link', { name: 'AMER' })
+    expect(squadLink).toHaveAttribute('href', 'https://github.com/orgs/canonical/teams/platform-engineering-amer')
+    expect(squadLink).toHaveClass('p-chip')
+  })
+
+  it('removes the target column from the dimensions table and shows target thresholds in evidence', () => {
+    wrap('matrix')
+
+    const table = screen.getByRole('table')
+    expect(within(table).queryByRole('columnheader', { name: 'Target' })).not.toBeInTheDocument()
+    expect(within(table).getByRole('columnheader', { name: 'Current' })).toBeInTheDocument()
+    expect(within(table).getByRole('columnheader', { name: 'Drift' })).toBeInTheDocument()
+    expect(within(table).getByRole('columnheader', { name: 'Evidence' })).toBeInTheDocument()
+
+    const row = screen.getByRole('link', { name: 'test verification' }).closest('tr')
+    expect(row).not.toBeNull()
+    expect(row).toHaveTextContent('Coverage')
+    expect(row).toHaveTextContent('87 / 90')
+    expect(row).toHaveTextContent('Build passing')
   })
 
   it('renders GitHub repo link for foundational component', () => {
