@@ -2,6 +2,8 @@ import operator as op_module
 import re
 from typing import Any
 
+from engine.models import Medal
+
 
 _OPS: dict[str, Any] = {
     ">=": op_module.ge,
@@ -54,3 +56,29 @@ def eval_condition(metrics: dict[str, Any], condition: str) -> bool:
             right = raw_value
 
     return _OPS[op_str](left, right)
+
+
+def evaluate_rubric(metrics: dict[str, Any], rubric: dict) -> Medal:
+    """
+    Determine the highest medal tier a product achieves for one dimension.
+
+    Checks tiers top-down (gold → silver). If a tier's conditions all
+    pass, that tier is returned immediately.
+
+    Bronze handling:
+    - If `bronze` key exists in rubric: bronze is explicit — check its
+      conditions. Pass → Medal.BRONZE. Fail → Medal.UNRATED (product
+      hasn't met even the minimum threshold).
+    - If no `bronze` key: bronze is the implicit fallback minimum. A
+      product that fails silver and gold still gets Medal.BRONZE.
+    """
+    for tier in ("gold", "silver"):
+        if tier in rubric and all(eval_condition(metrics, cond) for cond in rubric[tier]):
+            return Medal(tier)
+
+    if "bronze" in rubric:
+        if all(eval_condition(metrics, cond) for cond in rubric["bronze"]):
+            return Medal.BRONZE
+        return Medal.UNRATED
+
+    return Medal.BRONZE  # implicit fallback
