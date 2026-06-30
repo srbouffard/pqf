@@ -1,0 +1,35 @@
+# products/matrix.yaml
+id: matrix
+name: "Matrix (Synapse)"
+description: "Open-standard chat for secure real-time collaboration"
+
+lifecycle: stable          # experimental | beta | stable | legacy
+target_medal: gold
+
+ownership:
+  squad: americas
+  stakeholders:
+    - "IS Operations"
+    - "Community Team"
+  users:
+    - "PFE"
+
+documentation_url: "https://charmhub.io/synapse"
+allure_report_url: ""  # filled in by scorer
+
+components:
+  foundational:
+    - id: synapse
+      type: charm
+      github_repo: canonical/synapse-operator
+    - id: postgresql-k8s
+      type: charm
+      github_repo: canonical/postgresql-k8s-operator
+  feature:
+    - id: saml-integrator
+      type: charm
+      github_repo: canonical/saml-integrator-operator
+  auxiliary:
+    - id: synapse-stats-exporter
+      type: charm
+      github_repo: canonical/synapse-operator
