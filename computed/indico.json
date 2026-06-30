@@ -1,6 +1,6 @@
 {
-  "product_id": "matrix",
-  "computed_at": "2026-06-30T16:02:25.953915+00:00",
+  "product_id": "indico",
+  "computed_at": "2026-06-30T16:02:26.309585+00:00",
   "metrics": {
     "test_verification": {
       "coverage_pct": 0,
@@ -9,8 +9,8 @@
     },
     "documentation": {
       "has_readme": true,
-      "has_contributing": true,
-      "has_security": false,
+      "has_contributing": false,
+      "has_security": true,
       "diataxis_coverage": 0,
       "style_linter_passing": false,
       "links_passing": true
@@ -25,8 +25,8 @@
       "codeql_enabled": false
     },
     "support_engagement": {
-      "avg_triage_days": 364.6,
-      "avg_pr_review_days": 0.4
+      "avg_triage_days": 731.1,
+      "avg_pr_review_days": 0.6
     }
   }
 }
