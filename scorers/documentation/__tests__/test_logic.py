@@ -79,9 +79,6 @@ def test_compute_metrics_happy_path(mocker):
         return_value=_README,
     )
     mock_client = MagicMock()
-    mock_client.chat.completions.create.return_value.choices = [
-        MagicMock(message=MagicMock(content='{"diataxis_coverage": 2, "reasoning": "Has tutorial and how-to"}'))
-    ]
     mocker.patch("scorers.documentation.logic._make_openrouter_client", return_value=mock_client)
     # Patch style call separately on second invocation
     mock_client.chat.completions.create.side_effect = [

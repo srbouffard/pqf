@@ -1,3 +1,4 @@
+import base64
 import json
 from pathlib import Path
 from typing import Any
@@ -53,7 +54,6 @@ def _fetch_readme(owner_repo: str, github_token: str) -> str:
     resp = session.get(url, timeout=15)
     if not resp.ok:
         return ""
-    import base64
     data = resp.json()
     content = data.get("content", "")
     encoding = data.get("encoding", "base64")
