@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T21:10:22.810726+00:00",
+  "generated_at": "2026-06-30T21:13:15.313847+00:00",
   "products": [
     {
       "id": "discourse",
@@ -58,8 +58,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": true,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 2,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": {
@@ -162,8 +162,8 @@
             "has_readme": true,
             "has_contributing": false,
             "has_security": true,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 2,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": {
@@ -262,8 +262,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": true,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 3,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": null
@@ -357,8 +357,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": false,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 2,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": {
@@ -454,8 +454,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": true,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 1,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": {
@@ -542,8 +542,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": false,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 2,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": null
@@ -635,8 +635,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": true,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 2,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": {
@@ -735,8 +735,8 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": true,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
+            "diataxis_coverage": 3,
+            "style_linter_passing": true,
             "links_passing": true
           },
           "drift": null
@@ -765,7 +765,7 @@
           "target": "bronze",
           "metrics": {
             "avg_triage_days": 735.1,
-            "avg_pr_review_days": 3.3
+            "avg_pr_review_days": 4.9
           },
           "drift": null
         }
