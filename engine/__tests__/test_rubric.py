@@ -1,6 +1,7 @@
 import pytest
-from engine.rubric import eval_condition
 
+from engine.models import Medal
+from engine.rubric import eval_condition, evaluate_rubric
 
 # --- Numeric comparisons ---
 
@@ -84,9 +85,6 @@ def test_condition_with_extra_spaces_is_valid():
 
 
 # --- evaluate_rubric tests ---
-
-from engine.rubric import evaluate_rubric
-from engine.models import Medal
 
 # Rubric with explicit bronze, silver, and gold conditions
 FULL_RUBRIC = {

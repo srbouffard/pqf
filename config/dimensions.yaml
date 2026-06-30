@@ -1,0 +1,86 @@
+# config/dimensions.yaml
+# The single configuration knob for the entire scoring system.
+# Adding a dimension = add an entry here + create scorers/<name>/scorer.py
+
+dimensions:
+
+  test_verification:
+    scorer: scorers/test_verification/scorer.py
+    outputs:
+      coverage_pct: number          # 0-100
+      stability_pct: number         # 0-100
+      latest_build_passing: boolean
+    medals:
+      bronze:
+        - coverage_pct >= 70
+        - latest_build_passing == true
+      silver:
+        - coverage_pct >= 80
+        - stability_pct >= 85
+      gold:
+        - coverage_pct >= 90
+        - stability_pct >= 98
+
+  documentation:
+    scorer: scorers/documentation/scorer.py
+    outputs:
+      has_readme: boolean
+      has_contributing: boolean
+      has_security: boolean
+      diataxis_coverage: number      # 0-4: tutorial/howto/reference/explanation
+      style_linter_passing: boolean
+      links_passing: boolean
+    medals:
+      bronze:
+        - has_readme == true
+        - has_contributing == true
+        - has_security == true
+        - links_passing == true
+      silver:
+        - diataxis_coverage >= 4
+      gold:
+        - style_linter_passing == true
+        - diataxis_coverage == 4
+
+  substrate_compat:
+    scorer: scorers/substrate_compat/scorer.py
+    outputs:
+      supports_juju_3: boolean
+      supports_juju_4: boolean
+      supports_ck8s: boolean
+    medals:
+      # No explicit bronze: failing silver/gold → implicit bronze fallback.
+      # A product on legacy substrates (e.g., Juju 2.9 only) lands at bronze.
+      silver:
+        - supports_juju_3 == true
+      gold:
+        - supports_juju_4 == true
+        - supports_ck8s == true
+
+  security_ssdlc:
+    scorer: scorers/security_ssdlc/scorer.py
+    outputs:
+      cve_response: boolean          # team responds to critical CVEs
+      ssdlc_standard: boolean        # aligns with SSDLC standard practices
+      ssdlc_onboarded: boolean       # officially onboarded into company SSDLC
+    medals:
+      bronze:
+        - cve_response == true
+      silver:
+        - ssdlc_standard == true
+      gold:
+        - ssdlc_onboarded == true
+
+  support_engagement:
+    scorer: scorers/support_engagement/scorer.py
+    outputs:
+      avg_triage_days: number        # average days to triage new issues
+      avg_pr_review_days: number     # average days to review external PRs
+    medals:
+      # No explicit bronze: any level of support activity → implicit bronze.
+      silver:
+        - avg_triage_days <= 5
+        - avg_pr_review_days <= 7
+      gold:
+        - avg_triage_days <= 2
+        - avg_pr_review_days <= 3

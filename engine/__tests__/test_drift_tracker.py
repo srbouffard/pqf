@@ -1,12 +1,12 @@
-import pytest
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
 from engine.drift_tracker import compute_dimension_drift, update_drift_history
 from engine.models import Medal
 
 
 # Helper: UTC datetime factory
 def utc(year, month, day):
-    return datetime(year, month, day, tzinfo=timezone.utc)
+    return datetime(year, month, day, tzinfo=UTC)
 
 
 # ─── compute_dimension_drift ───────────────────────────────────────────────────
@@ -119,7 +119,10 @@ def test_clears_entry_when_compliant():
 def test_clears_entry_and_removes_empty_product_dict():
     history = {
         "matrix": {
-            "docs": {"first_seen_at": "2026-01-01T00:00:00+00:00", "deadline": "2026-07-01T00:00:00+00:00"}
+            "docs": {
+                "first_seen_at": "2026-01-01T00:00:00+00:00",
+                "deadline": "2026-07-01T00:00:00+00:00",
+            }
         }
     }
     now = utc(2026, 6, 1)

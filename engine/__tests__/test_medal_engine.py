@@ -1,5 +1,4 @@
 # engine/__tests__/test_medal_engine.py
-import pytest
 from engine.medal_engine import compute_product
 from engine.models import Medal
 
@@ -31,7 +30,11 @@ def test_current_medal_is_lowest_across_dimensions():
         "metrics": {
             "test_verification": {"coverage_pct": 95, "latest_build_passing": True},
             # documentation only meets bronze
-            "documentation": {"has_readme": True, "diataxis_coverage": 2, "style_linter_passing": False},
+            "documentation": {
+                "has_readme": True,
+                "diataxis_coverage": 2,
+                "style_linter_passing": False,
+            },
         }
     }
     result = compute_product(_PRODUCT, computed, _DIMENSIONS, {})
@@ -44,7 +47,11 @@ def test_all_gold_dimensions_gives_gold_product():
     computed = {
         "metrics": {
             "test_verification": {"coverage_pct": 95, "latest_build_passing": True},
-            "documentation": {"has_readme": True, "diataxis_coverage": 4, "style_linter_passing": True},
+            "documentation": {
+                "has_readme": True,
+                "diataxis_coverage": 4,
+                "style_linter_passing": True,
+            },
         }
     }
     result = compute_product(_PRODUCT, computed, _DIMENSIONS, {})
@@ -55,7 +62,11 @@ def test_all_silver_gives_silver_product():
     computed = {
         "metrics": {
             "test_verification": {"coverage_pct": 85, "latest_build_passing": True},
-            "documentation": {"has_readme": True, "diataxis_coverage": 4, "style_linter_passing": False},
+            "documentation": {
+                "has_readme": True,
+                "diataxis_coverage": 4,
+                "style_linter_passing": False,
+            },
         }
     }
     result = compute_product(_PRODUCT, computed, _DIMENSIONS, {})
@@ -66,7 +77,11 @@ def test_missing_dimension_in_computed_treated_as_empty_metrics():
     # test_verification metrics missing entirely
     computed = {
         "metrics": {
-            "documentation": {"has_readme": True, "diataxis_coverage": 4, "style_linter_passing": True},
+            "documentation": {
+                "has_readme": True,
+                "diataxis_coverage": 4,
+                "style_linter_passing": True,
+            },
         }
     }
     result = compute_product(_PRODUCT, computed, _DIMENSIONS, {})
