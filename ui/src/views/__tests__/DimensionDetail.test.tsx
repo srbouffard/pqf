@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter, Routes, Route } from 'react-router'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
@@ -71,18 +71,21 @@ const mockPortfolio: Portfolio = {
           description: 'A README.md exists in the primary component repository.',
           type: 'boolean',
           range: '',
+          ai_assisted: false,
         },
         diataxis_coverage: {
           label: 'Diátaxis coverage',
           description: 'Number of Diátaxis doc types present.',
           type: 'number',
           range: '0–4',
+          ai_assisted: true,
         },
         style_linter_passing: {
           label: 'Style linter passing',
           description: 'Documentation passes the Canonical Vale style linter with no errors.',
           type: 'boolean',
           range: '',
+          ai_assisted: true,
         },
       },
       medals: {
@@ -122,11 +125,24 @@ describe('DimensionDetail', () => {
     expect(screen.getByRole('heading', { name: 'Documentation' })).toBeInTheDocument()
   })
 
-  it('renders rubric criterion with metric label and description', () => {
+  it('renders metrics card with scoring badges', () => {
     wrap('documentation')
-    expect(screen.getByText('README present')).toBeInTheDocument()
-    expect(screen.getByText('has_readme == true')).toBeInTheDocument()
-    expect(screen.getByText('A README.md exists in the primary component repository.')).toBeInTheDocument()
+    const metricsCard = screen.getByRole('heading', { name: 'Metrics' }).closest('.p-card')
+    expect(metricsCard).not.toBeNull()
+    expect(within(metricsCard!).getByText('Diátaxis coverage')).toBeInTheDocument()
+    expect(within(metricsCard!).getByText('0–4')).toBeInTheDocument()
+    expect(within(metricsCard!).getByText('Deterministic')).toBeInTheDocument()
+    expect(within(metricsCard!).getAllByText('✦ AI')).toHaveLength(2)
+  })
+
+  it('renders rubric criterion labels and keeps descriptions on hover only', () => {
+    wrap('documentation')
+    const rubricCard = screen.getByRole('heading', { name: 'Medal rubric' }).closest('.p-card')
+    expect(rubricCard).not.toBeNull()
+    expect(within(rubricCard!).getByText('README present')).toBeInTheDocument()
+    const criterion = within(rubricCard!).getByText('has_readme == true').closest('li')
+    expect(criterion).toHaveAttribute('title', 'A README.md exists in the primary component repository.')
+    expect(screen.getAllByText('A README.md exists in the primary component repository.')).toHaveLength(1)
   })
 
   it('renders product table without target column and with drift deadlines', () => {

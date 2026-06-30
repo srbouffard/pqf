@@ -14,6 +14,7 @@ _DIMENSIONS = {
                     "range": "0-100",
                     "label": "Coverage",
                     "description": "Source line coverage percentage.",
+                    "ai_assisted": True,
                 },
                 "stability_pct": "number",
                 "latest_build_passing": {
@@ -135,12 +136,14 @@ def test_dimensions_meta_structure():
             "description": "Source line coverage percentage.",
             "type": "number",
             "range": "0-100",
+            "ai_assisted": True,
         },
         "latest_build_passing": {
             "label": "Latest build passing",
             "description": "Whether the latest default branch build passed.",
             "type": "boolean",
             "range": "",
+            "ai_assisted": False,
         },
     }
     assert "stability_pct" not in tv["outputs"]

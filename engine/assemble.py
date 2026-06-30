@@ -43,6 +43,7 @@ def _build_dimensions_meta(dimensions_config: dict) -> dict:
                 "description": metric_cfg.get("description", ""),
                 "type": metric_cfg.get("type", "unknown"),
                 "range": metric_cfg.get("range", ""),
+                "ai_assisted": metric_cfg.get("ai_assisted", False),
             }
 
         meta[dim_name] = {

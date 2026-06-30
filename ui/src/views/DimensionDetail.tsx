@@ -63,62 +63,120 @@ export default function DimensionDetail() {
           {meta.description && <p className="u-text--muted" style={{ margin: 0 }}>{meta.description}</p>}
         </div>
 
-        {/* Rubric card */}
-        <div className="p-card u-sv3">
-          <h2 className="p-heading--4" style={{ marginBottom: '1rem' }}>Rubric</h2>
-          <div style={{ overflowX: 'auto' }}>
+        {/* Metrics card — one row per output metric */}
+        {meta.outputs && Object.keys(meta.outputs).length > 0 && (
+          <div className="p-card u-sv3">
+            <h2 className="p-heading--4" style={{ marginBottom: '1rem' }}>Metrics</h2>
             <table style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}>
               <colgroup>
+                <col style={{ width: '22%' }} />
+                <col style={{ width: '48%' }} />
                 <col style={{ width: '15%' }} />
-                <col style={{ width: '85%' }} />
+                <col style={{ width: '15%' }} />
               </colgroup>
               <thead>
                 <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
-                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Tier</th>
-                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Criteria</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Metric</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Description</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Type</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Scoring</th>
                 </tr>
               </thead>
               <tbody>
-                {TIER_LABELS.map((tier, idx) => {
-                  const crit = meta.medals[tier]
-                  if (!crit) return null
-                  return (
-                    <tr key={tier} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
-                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                        <MedalBadge medal={tier} size="small" />
-                      </td>
-                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
-                        <ul className="p-list" style={{ margin: 0 }}>
-                          {crit.criteria.map((c: string, i: number) => {
-                            const metricKey = parseCriterionMetric(c)
-                            const outputMeta = meta.outputs?.[metricKey]
-
-                            return (
-                              <li key={i} className="p-list__item">
-                                {outputMeta ? (
-                                  <>
-                                    <div>
-                                      <strong>{outputMeta.label}</strong>{' '}
-                                      <code style={{ fontSize: '0.8125rem' }}>{c}</code>
-                                    </div>
-                                    {outputMeta.description && (
-                                      <p className="u-text--muted" style={{ margin: '0.1rem 0 0', fontSize: '0.75rem' }}>{outputMeta.description}</p>
-                                    )}
-                                  </>
-                                ) : (
-                                  <code>{c}</code>
-                                )}
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      </td>
-                    </tr>
-                  )
-                })}
+                {Object.entries(meta.outputs).map(([key, out], idx) => (
+                  <tr key={key} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
+                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                      <strong style={{ display: 'block' }}>{out.label}</strong>
+                      <code style={{ fontSize: '0.75rem', color: '#666' }}>{key}</code>
+                    </td>
+                    <td style={{ padding: '0.75rem', verticalAlign: 'top', fontSize: '0.875rem' }}>
+                      {out.description}
+                    </td>
+                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                      <span style={{ fontSize: '0.75rem' }}>
+                        <strong>{out.type}</strong>
+                        {out.range && <span style={{ color: '#666', display: 'block' }}>{out.range}</span>}
+                      </span>
+                    </td>
+                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                      {out.ai_assisted ? (
+                        <span
+                          title="Scored by AI (LLM via OpenRouter)"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            color: '#7764d8',
+                            background: '#f0eeff',
+                            border: '1px solid #c5bcf5',
+                            borderRadius: '3px',
+                            padding: '0.15rem 0.4rem',
+                            cursor: 'default',
+                          }}
+                        >
+                          ✦ AI
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: '0.75rem', color: '#666' }}>Deterministic</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Rubric card — criteria only, descriptions on hover */}
+        <div className="p-card u-sv3">
+          <h2 className="p-heading--4" style={{ marginBottom: '1rem' }}>Medal rubric</h2>
+          <table style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}>
+            <colgroup>
+              <col style={{ width: '14%' }} />
+              <col style={{ width: '86%' }} />
+            </colgroup>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
+                <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Tier</th>
+                <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Required criteria</th>
+              </tr>
+            </thead>
+            <tbody>
+              {TIER_LABELS.map((tier, idx) => {
+                const crit = meta.medals[tier]
+                if (!crit) return null
+                return (
+                  <tr key={tier} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
+                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                      <MedalBadge medal={tier} size="small" />
+                    </td>
+                    <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                      <ul className="p-list" style={{ margin: 0 }}>
+                        {crit.criteria.map((c: string, i: number) => {
+                          const metricKey = parseCriterionMetric(c)
+                          const outputMeta = meta.outputs?.[metricKey]
+                          return (
+                            <li
+                              key={i}
+                              className="p-list__item"
+                              title={outputMeta?.description}
+                              style={{ cursor: outputMeta?.description ? 'help' : undefined }}
+                            >
+                              <strong>{outputMeta?.label ?? metricKey}</strong>
+                              {' '}
+                              <code style={{ fontSize: '0.8125rem', color: '#666' }}>{c}</code>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
 
         {/* Product scores card */}
@@ -134,7 +192,7 @@ export default function DimensionDetail() {
               <thead>
                 <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Product</th>
-                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Medal</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Dimension score</th>
                   <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Drift / Deadline</th>
                 </tr>
               </thead>

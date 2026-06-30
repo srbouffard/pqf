@@ -49,6 +49,7 @@ export interface OutputMeta {
   description: string
   type: string
   range: string
+  ai_assisted?: boolean
 }
 
 export interface DimensionMeta {

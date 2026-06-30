@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T17:00:20.537842+00:00",
+  "generated_at": "2026-06-30T21:10:22.810726+00:00",
   "products": [
     {
       "id": "discourse",
@@ -45,7 +45,11 @@
             "stability_pct": 0,
             "latest_build_passing": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "documentation": {
           "medal": "bronze",
@@ -58,7 +62,11 @@
             "style_linter_passing": false,
             "links_passing": true
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "substrate_compat": {
           "medal": "bronze",
@@ -68,7 +76,11 @@
             "supports_juju_4": false,
             "supports_ck8s": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "security_ssdlc": {
           "medal": "bronze",
@@ -77,7 +89,11 @@
             "dependabot_enabled": false,
             "codeql_enabled": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "support_engagement": {
           "medal": "bronze",
@@ -86,7 +102,11 @@
             "avg_triage_days": 216.0,
             "avg_pr_review_days": 1.9
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         }
       }
     },
@@ -602,7 +622,11 @@
             "stability_pct": 0,
             "latest_build_passing": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "documentation": {
           "medal": "bronze",
@@ -615,7 +639,11 @@
             "style_linter_passing": false,
             "links_passing": true
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "substrate_compat": {
           "medal": "bronze",
@@ -625,7 +653,11 @@
             "supports_juju_4": false,
             "supports_ck8s": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "security_ssdlc": {
           "medal": "bronze",
@@ -634,7 +666,11 @@
             "dependabot_enabled": false,
             "codeql_enabled": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         },
         "support_engagement": {
           "medal": "bronze",
@@ -643,7 +679,11 @@
             "avg_triage_days": 392.8,
             "avg_pr_review_days": 1.4
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
+            "deadline": "2027-06-30T17:00:20.537842+00:00"
+          }
         }
       }
     },
@@ -741,19 +781,22 @@
           "label": "Coverage",
           "description": "Percentage of source lines covered by automated tests, averaged across foundational components.",
           "type": "number",
-          "range": "0\u2013100"
+          "range": "0\u2013100",
+          "ai_assisted": false
         },
         "stability_pct": {
           "label": "Stability",
           "description": "Percentage of CI runs that passed over the last 30 days.",
           "type": "number",
-          "range": "0\u2013100"
+          "range": "0\u2013100",
+          "ai_assisted": false
         },
         "latest_build_passing": {
           "label": "Latest build passing",
           "description": "Whether the most recent CI run on the default branch is green.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         }
       },
       "medals": {
@@ -785,37 +828,43 @@
           "label": "README present",
           "description": "A README.md exists in the primary component repository.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         },
         "has_contributing": {
           "label": "CONTRIBUTING present",
           "description": "A CONTRIBUTING.md guide exists, helping contributors get started.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         },
         "has_security": {
           "label": "SECURITY present",
           "description": "A SECURITY.md file exists with vulnerability disclosure instructions.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         },
         "diataxis_coverage": {
           "label": "Di\u00e1taxis coverage",
           "description": "Number of Di\u00e1taxis doc types present (tutorial, how-to, reference, explanation). Scored by LLM analysis of the docs folder.",
           "type": "number",
-          "range": "0\u20134"
+          "range": "0\u20134",
+          "ai_assisted": true
         },
         "style_linter_passing": {
           "label": "Style linter passing",
           "description": "Documentation passes the Canonical Vale style linter with no errors.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": true
         },
         "links_passing": {
           "label": "Links passing",
           "description": "All hyperlinks in documentation resolve without HTTP errors.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         }
       },
       "medals": {
@@ -848,19 +897,22 @@
           "label": "Juju 3 support",
           "description": "The product's charms declare compatibility with Juju 3.x in their metadata.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         },
         "supports_juju_4": {
           "label": "Juju 4 support",
           "description": "The product's charms declare compatibility with Juju 4.x (next-gen).",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         },
         "supports_ck8s": {
           "label": "Charmed K8s support",
           "description": "The product is tested and documented for Charmed Kubernetes deployments.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         }
       },
       "medals": {
@@ -885,13 +937,15 @@
           "label": "Dependabot enabled",
           "description": "A .github/dependabot.yml file is present in at least one foundational component repository, enabling automated dependency updates.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         },
         "codeql_enabled": {
           "label": "CodeQL enabled",
           "description": "At least one foundational repository has a GitHub Actions workflow that references github/codeql-action, enabling static analysis.",
           "type": "boolean",
-          "range": ""
+          "range": "",
+          "ai_assisted": false
         }
       },
       "medals": {
@@ -916,13 +970,15 @@
           "label": "Avg. triage time",
           "description": "Average number of days between issue creation and first team response or label, over the last 90 days.",
           "type": "number",
-          "range": "\u2265 0 days"
+          "range": "\u2265 0 days",
+          "ai_assisted": false
         },
         "avg_pr_review_days": {
           "label": "Avg. PR review time",
           "description": "Average number of days between PR opening and first review, over the last 90 days.",
           "type": "number",
-          "range": "\u2265 0 days"
+          "range": "\u2265 0 days",
+          "ai_assisted": false
         }
       },
       "medals": {

@@ -56,10 +56,12 @@ dimensions:
         range: "0–4"
         label: "Diátaxis coverage"
         description: "Number of Diátaxis doc types present (tutorial, how-to, reference, explanation). Scored by LLM analysis of the docs folder."
+        ai_assisted: true
       style_linter_passing:
         type: boolean
         label: "Style linter passing"
         description: "Documentation passes the Canonical Vale style linter with no errors."
+        ai_assisted: true
       links_passing:
         type: boolean
         label: "Links passing"
