@@ -6,7 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner'
 import type { Medal } from '../types'
 
 const MEDAL_ORDER: Record<Medal, number> = { gold: 3, silver: 2, bronze: 1, unrated: 0 }
-const TIER_LABELS: Medal[] = ['gold', 'silver', 'bronze']
+const TIER_LABELS = ['gold', 'silver', 'bronze'] as const
 
 export default function DimensionDetail() {
   const { id } = useParams<{ id: string }>()
@@ -55,7 +55,7 @@ export default function DimensionDetail() {
                 <td><MedalBadge medal={tier} size="small" /></td>
                 <td>
                   <ul className="p-list" style={{ margin: 0 }}>
-                    {crit.criteria.map((c, i) => (
+                    {crit.criteria.map((c: string, i: number) => (
                       <li key={i} className="p-list__item">
                         <code>{c}</code>
                       </li>
