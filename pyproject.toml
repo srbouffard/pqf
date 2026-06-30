@@ -9,20 +9,24 @@ requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
     "python-dateutil>=2.9",
+    "requests>=2.32",
+    "openai>=1.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
+    "pytest-mock>=3.14",
+    "responses>=0.25",
     "ruff>=0.9",
 ]
 
 [tool.setuptools.packages]
-find = {where = ["."], include = ["engine"]}
+find = {where = ["."], include = ["engine", "scorers*"]}
 
 [tool.pytest.ini_options]
-testpaths = ["engine/__tests__"]
+testpaths = ["engine/__tests__", "scorers"]
 addopts = "-v"
 
 [tool.ruff]

@@ -60,16 +60,15 @@ dimensions:
   security_ssdlc:
     scorer: scorers/security_ssdlc/scorer.py
     outputs:
-      cve_response: boolean          # team responds to critical CVEs
-      ssdlc_standard: boolean        # aligns with SSDLC standard practices
-      ssdlc_onboarded: boolean       # officially onboarded into company SSDLC
+      dependabot_enabled: boolean    # .github/dependabot.yml present in any foundational repo
+      codeql_enabled: boolean        # any workflow references github/codeql-action
     medals:
-      bronze:
-        - cve_response == true
+      # No explicit bronze: any foundational repo presence → implicit bronze fallback.
       silver:
-        - ssdlc_standard == true
+        - dependabot_enabled == true
       gold:
-        - ssdlc_onboarded == true
+        - dependabot_enabled == true
+        - codeql_enabled == true
 
   support_engagement:
     scorer: scorers/support_engagement/scorer.py

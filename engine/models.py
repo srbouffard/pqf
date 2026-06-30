@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class Medal(str, Enum):
+class Medal(StrEnum):
     UNRATED = "unrated"
     BRONZE = "bronze"
     SILVER = "silver"

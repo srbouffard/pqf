@@ -1,5 +1,4 @@
-import pytest
-from engine.models import Medal, MEDAL_RANK, DriftState, DimensionResult, ProductResult
+from engine.models import MEDAL_RANK, DimensionResult, DriftState, Medal, ProductResult
 
 
 def test_medal_values_are_lowercase_strings():
