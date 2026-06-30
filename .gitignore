@@ -6,3 +6,10 @@ venv/
 .claude/
 node_modules/
 *.tsbuildinfo
+
+# UI
+ui/node_modules/
+ui/dist/
+ui/.playwright/
+ui/playwright-report/
+ui/test-results/
