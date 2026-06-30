@@ -1,0 +1,15 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "PQF" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - text: PQF
+      - navigation [ref=e9]:
+        - list [ref=e10]:
+          - listitem [ref=e11]:
+            - link "Portfolio" [ref=e12] [cursor=pointer]:
+              - /url: "#/"
+          - listitem [ref=e13]:
+            - link "About" [ref=e14] [cursor=pointer]:
+              - /url: "#/about"
+  - main [ref=e15]

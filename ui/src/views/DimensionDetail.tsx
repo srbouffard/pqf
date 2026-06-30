@@ -19,8 +19,10 @@ export default function DimensionDetail() {
   const meta = portfolio.dimensions_meta[id!]
   if (!meta) {
     return (
-      <div className="u-fixed-width">
-        <p>Dimension <strong>{id}</strong> not found. <Link to="/">Back to portfolio</Link></p>
+      <div className="row" style={{ paddingTop: '1.5rem' }}>
+        <div className="col-12">
+          <p>Dimension <strong>{id}</strong> not found. <Link to="/">Back to portfolio</Link></p>
+        </div>
       </div>
     )
   }
@@ -34,71 +36,105 @@ export default function DimensionDetail() {
   return (
     <div className="row" style={{ paddingTop: '1.5rem' }}>
       <div className="col-12">
-        <p><Link to="/">← Portfolio</Link></p>
 
-        <h1 className="p-heading--2">{meta.label ?? id!.replace(/_/g, ' ')}</h1>
-        {meta.description && <p className="u-text--muted">{meta.description}</p>}
+        {/* Back nav */}
+        <p style={{ marginBottom: '1rem' }}><Link to="/">← Portfolio</Link></p>
 
-      <h2 className="p-heading--4">Rubric</h2>
-      <table className="p-table">
-        <thead>
-          <tr>
-            <th>Tier</th>
-            <th>Criteria</th>
-          </tr>
-        </thead>
-        <tbody>
-          {TIER_LABELS.map(tier => {
-            const crit = meta.medals[tier]
-            if (!crit) return null
-            return (
-              <tr key={tier}>
-                <td><MedalBadge medal={tier} size="small" /></td>
-                <td>
-                  <ul className="p-list" style={{ margin: 0 }}>
-                    {crit.criteria.map((c: string, i: number) => (
-                      <li key={i} className="p-list__item">
-                        <code>{c}</code>
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+        {/* Header card */}
+        <div className="p-card u-sv3">
+          <h1 className="p-heading--3" style={{ marginBottom: '0.25rem' }}>{meta.label ?? id!.replace(/_/g, ' ')}</h1>
+          {meta.description && <p className="u-text--muted" style={{ margin: 0 }}>{meta.description}</p>}
+        </div>
 
-      <h2 className="p-heading--4">Product scores</h2>
-      <table className="p-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Medal</th>
-            <th>Target</th>
-            <th>Drift</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productsWithDim.map(product => {
-            const entry = product.dimensions[id!]
-            return (
-              <tr key={product.id}>
-                <td>
-                  <Link to={`/products/${product.id}`}>{product.name}</Link>
-                </td>
-                <td><MedalBadge medal={entry.medal} size="small" /></td>
-                <td><MedalBadge medal={entry.target} size="small" /></td>
-                <td><DriftChip drift={entry.drift} /></td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+        {/* Rubric card */}
+        <div className="p-card u-sv3">
+          <h2 className="p-heading--4" style={{ marginBottom: '1rem' }}>Rubric</h2>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}>
+              <colgroup>
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '85%' }} />
+              </colgroup>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Tier</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Criteria</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TIER_LABELS.map((tier, idx) => {
+                  const crit = meta.medals[tier]
+                  if (!crit) return null
+                  return (
+                    <tr key={tier} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <MedalBadge medal={tier} size="small" />
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <ul className="p-list" style={{ margin: 0 }}>
+                          {crit.criteria.map((c: string, i: number) => (
+                            <li key={i} className="p-list__item">
+                              <code>{c}</code>
+                            </li>
+                          ))}
+                        </ul>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-      <p className="u-sv2">
-        <Link to="/about">Learn more about the framework →</Link>
-      </p>
+        {/* Product scores card */}
+        <div className="p-card u-sv3">
+          <h2 className="p-heading--4" style={{ marginBottom: '1rem' }}>Product scores</h2>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}>
+              <colgroup>
+                <col style={{ width: '40%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
+              </colgroup>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #d9d9d9' }}>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Product</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Medal</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Target</th>
+                  <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: '#666' }}>Drift</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productsWithDim.map((product, idx) => {
+                  const entry = product.dimensions[id!]
+                  return (
+                    <tr key={product.id} style={{ borderBottom: '1px solid #e5e5e5', background: idx % 2 === 0 ? '#fafafa' : '#fff' }}>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <Link to={`/products/${product.id}`} style={{ fontWeight: 500 }}>{product.name}</Link>
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <MedalBadge medal={entry.medal} size="small" />
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <MedalBadge medal={entry.target} size="small" />
+                      </td>
+                      <td style={{ padding: '0.75rem', verticalAlign: 'top' }}>
+                        <DriftChip drift={entry.drift} />
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p className="u-sv2">
+          <Link to="/about">Learn more about the framework →</Link>
+        </p>
+
       </div>
     </div>
   )
