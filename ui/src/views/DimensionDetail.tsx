@@ -5,7 +5,7 @@ import DriftChip from '../components/DriftChip'
 import LoadingSpinner from '../components/LoadingSpinner'
 import type { Medal } from '../types'
 
-const MEDAL_ORDER: Record<Medal, number> = { gold: 4, silver: 3, bronze: 2, unrated: 1 }
+const MEDAL_ORDER: Record<Medal, number> = { gold: 3, silver: 2, bronze: 1, unrated: 0 }
 const TIER_LABELS: Medal[] = ['gold', 'silver', 'bronze']
 
 export default function DimensionDetail() {
