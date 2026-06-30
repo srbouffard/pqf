@@ -116,7 +116,13 @@ def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any
             timeout=30,
         )
         if pulls_resp.ok:
-            pr_avg = _compute_avg_pr_review_days(pulls_resp.json(), session, repo)
+            # Filter PRs by 90-day window (since param not supported on /pulls endpoint)
+            since_dt = _parse_dt(since)
+            filtered_pulls = [
+                p for p in pulls_resp.json()
+                if _parse_dt(p["created_at"]) >= since_dt
+            ]
+            pr_avg = _compute_avg_pr_review_days(filtered_pulls, session, repo)
             if pr_avg > 0:
                 all_pr_times.append(pr_avg)
 

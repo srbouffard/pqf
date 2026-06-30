@@ -200,3 +200,28 @@ def test_aggregates_multiple_repos():
         )
     result = compute_metrics(product, "token")
     assert result["avg_triage_days"] == 2.0   # both repos have 2-day triage
+
+
+@responses.activate
+def test_excludes_prs_outside_90day_window():
+    """PRs created more than 90 days ago are excluded from the metric."""
+    # One old PR (created ~180 days ago), one recent PR (created recently)
+    pulls = [
+        {"number": 1, "created_at": "2025-12-01T00:00:00Z"},  # ~180 days ago
+        {"number": 2, "created_at": "2026-06-01T00:00:00Z"},  # recent
+    ]
+    responses.add(
+        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",
+        json=[], status=200, match_querystring=False,
+    )
+    responses.add(
+        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls",
+        json=pulls, status=200, match_querystring=False,
+    )
+    responses.add(
+        responses.GET, f"{_GITHUB_API}/repos/canonical/synapse-operator/pulls/2/reviews",
+        json=[{"submitted_at": "2026-06-02T00:00:00Z"}], status=200,
+    )
+    result = compute_metrics(_PRODUCT, "token")
+    # Only PR #2 should be considered (PR #1 is outside 90-day window)
+    assert result["avg_pr_review_days"] == 1.0
