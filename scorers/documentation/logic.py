@@ -80,14 +80,19 @@ def _evaluate_docs(
     prompt = prompt_path.read_text()
     client = _make_openrouter_client(openrouter_api_key)
     response = client.chat.completions.create(
-        model="google/gemini-2.0-flash-001",
+        model="google/gemini-2.5-flash",
         messages=[
             {"role": "system", "content": prompt},
             {"role": "user", "content": readme_content or "(no documentation found)"},
         ],
     )
-    raw = response.choices[0].message.content
-    return json.loads(raw)
+    raw = response.choices[0].message.content or ""
+    # Strip markdown code fences if the model wrapped the JSON
+    raw = raw.strip()
+    if raw.startswith("```"):
+        raw = raw.split("\n", 1)[-1]  # drop opening fence line
+        raw = raw.rsplit("```", 1)[0]  # drop closing fence
+    return json.loads(raw.strip())
 
 
 def compute_metrics(
