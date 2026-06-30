@@ -33,4 +33,3 @@ components:
     - id: synapse-stats-exporter
       type: charm
       github_repo: canonical/synapse-operator
-
