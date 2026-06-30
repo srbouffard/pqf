@@ -8,6 +8,7 @@ on:
   push:
     paths:
       - 'products/**'        # re-run when a product YAML changes
+      - 'config/**'          # re-run when dimension config changes
 
 permissions:
   contents: write            # needed for the commit-artifacts job
