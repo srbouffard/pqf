@@ -4,7 +4,7 @@ const MEDAL_COLOURS: Record<Medal, string> = {
   gold: '#C7962F',
   silver: '#8F8F8F',
   bronze: '#9E622A',
-  unrated: '#666666',
+  unrated: '#666',
 }
 
 const MEDAL_LABELS: Record<Medal, string> = {
