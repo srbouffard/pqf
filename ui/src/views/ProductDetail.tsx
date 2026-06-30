@@ -29,25 +29,26 @@ export default function ProductDetail() {
   ]
 
   return (
-    <div className="u-fixed-width">
-      <p><Link to="/">← Portfolio</Link></p>
+    <div className="row" style={{ paddingTop: '1.5rem' }}>
+      <div className="col-12">
+        <p><Link to="/">← Portfolio</Link></p>
 
-      <div className="u-sv2">
-        <h1 className="p-heading--2">{product.name}</h1>
-        <p className="u-text--muted">{product.description}</p>
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-          <span>Current:</span>
-          <MedalBadge medal={product.current_medal} />
-          <span>Target:</span>
-          <MedalBadge medal={product.target_medal} />
-          <span className="p-label">{product.lifecycle}</span>
-          {product.documentation_url && (
-            <a href={product.documentation_url} target="_blank" rel="noreferrer" className="p-button--neutral is-small">
-              Documentation ↗
-            </a>
-          )}
+        <div className="u-sv2">
+          <h1 className="p-heading--2">{product.name}</h1>
+          <p className="u-text--muted">{product.description}</p>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span>Current:</span>
+            <MedalBadge medal={product.current_medal} />
+            <span>Target:</span>
+            <MedalBadge medal={product.target_medal} />
+            <span className="p-label">{product.lifecycle}</span>
+            {product.documentation_url && (
+              <a href={product.documentation_url} target="_blank" rel="noreferrer" className="p-button--neutral is-small">
+                Documentation ↗
+              </a>
+            )}
+          </div>
         </div>
-      </div>
 
       <h2 className="p-heading--4">Dimensions</h2>
       <table className="p-table">
@@ -100,6 +101,7 @@ export default function ProductDetail() {
           </div>
         )
       })}
+      </div>
     </div>
   )
 }

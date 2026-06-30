@@ -12,7 +12,7 @@ export default function App() {
   return (
     <HashRouter>
       <GlobalNav />
-      <main className="l-main">
+      <main className="l-main" style={{ padding: '2rem 0', minHeight: '80vh', background: '#f5f5f5' }}>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<Overview />} />

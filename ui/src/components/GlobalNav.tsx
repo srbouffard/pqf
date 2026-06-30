@@ -1,24 +1,28 @@
-import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router'
 
 export default function GlobalNav() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    // @canonical/global-nav initialises via script tag in production;
-    // in the SPA we render a minimal Vanilla Framework navigation bar.
-  }, [])
+  const location = useLocation()
+  
+  const isActive = (path: string) => {
+    if (path === '/') return location.pathname === '/'
+    return location.pathname.startsWith(path)
+  }
+
   return (
-    <header className="p-navigation" ref={ref}>
+    <header className="p-navigation">
       <div className="p-navigation__row">
         <div className="p-navigation__banner">
           <div className="p-navigation__tagged-logo">
             <a className="p-navigation__link" href="#/">
-              <img
-                className="p-navigation__logo-icon"
-                src="https://assets.ubuntu.com/v1/5d6da5c4-logo-canonical-aubergine.svg"
-                alt="Canonical"
-                width="32"
-                height="32"
-              />
+              <div className="p-navigation__logo-tag" style={{ background: '#E95420' }}>
+                <img
+                  className="p-navigation__logo-icon"
+                  src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
+                  alt=""
+                  width="32"
+                  height="32"
+                />
+              </div>
               <span className="p-navigation__logo-title">PQF</span>
             </a>
           </div>
@@ -26,10 +30,20 @@ export default function GlobalNav() {
         <nav className="p-navigation__nav">
           <ul className="p-navigation__items">
             <li className="p-navigation__item">
-              <a className="p-navigation__link" href="#/">Portfolio</a>
+              <a 
+                className={`p-navigation__link ${isActive('/') ? 'is-selected' : ''}`}
+                href="#/"
+              >
+                Portfolio
+              </a>
             </li>
             <li className="p-navigation__item">
-              <a className="p-navigation__link" href="#/about">About</a>
+              <a 
+                className={`p-navigation__link ${isActive('/about') ? 'is-selected' : ''}`}
+                href="#/about"
+              >
+                About
+              </a>
             </li>
           </ul>
         </nav>

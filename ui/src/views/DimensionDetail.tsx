@@ -32,11 +32,12 @@ export default function DimensionDetail() {
     )
 
   return (
-    <div className="u-fixed-width">
-      <p><Link to="/">← Portfolio</Link></p>
+    <div className="row" style={{ paddingTop: '1.5rem' }}>
+      <div className="col-12">
+        <p><Link to="/">← Portfolio</Link></p>
 
-      <h1 className="p-heading--2">{meta.label ?? id!.replace(/_/g, ' ')}</h1>
-      {meta.description && <p className="u-text--muted">{meta.description}</p>}
+        <h1 className="p-heading--2">{meta.label ?? id!.replace(/_/g, ' ')}</h1>
+        {meta.description && <p className="u-text--muted">{meta.description}</p>}
 
       <h2 className="p-heading--4">Rubric</h2>
       <table className="p-table">
@@ -98,6 +99,7 @@ export default function DimensionDetail() {
       <p className="u-sv2">
         <Link to="/about">Learn more about the framework →</Link>
       </p>
+      </div>
     </div>
   )
 }

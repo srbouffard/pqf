@@ -1,0 +1,21 @@
+id: mattermost
+name: "Mattermost"
+description: "Open source messaging platform for team collaboration"
+lifecycle: stable
+target_medal: gold
+ownership:
+  squad: americas
+  stakeholders:
+    - "IS Operations"
+  users:
+    - "All Canonical staff"
+documentation_url: "https://charmhub.io/mattermost-k8s"
+allure_report_url: ""
+components:
+  foundational:
+    - id: mattermost-k8s
+      type: charm
+      github_repo: canonical/mattermost-k8s-operator
+    - id: postgresql-k8s
+      type: charm
+      github_repo: canonical/postgresql-k8s-operator

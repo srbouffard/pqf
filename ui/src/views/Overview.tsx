@@ -68,137 +68,147 @@ export default function Overview() {
   if (!portfolio) return null
 
   return (
-    <div className="u-fixed-width">
-      <h1 className="p-heading--2">Portfolio overview</h1>
+    <div className="row" style={{ paddingTop: '1.5rem' }}>
+      <div className="col-12">
+        <h1 className="p-heading--2">Portfolio overview</h1>
 
-      {/* Summary stats */}
-      <div className="row u-sv3">
-        <div className="col-4">
-          <div className="p-card">
-            <p className="p-card__title">{stats.atTarget}%</p>
-            <p className="p-card__content u-text--muted">At or above target</p>
+        {/* Summary stats */}
+        <div className="row u-sv3">
+          <div className="col-4">
+            <div className="p-card">
+              <p className="p-card__title">{stats.atTarget}%</p>
+              <p className="p-card__content u-text--muted">At or above target</p>
+            </div>
+          </div>
+          <div className="col-4">
+            <div className="p-card">
+              <p className="p-card__title">{stats.overdue}</p>
+              <p className="p-card__content u-text--muted">Overdue</p>
+            </div>
+          </div>
+          <div className="col-4">
+            <div className="p-card">
+              <p className="p-card__title">{stats.remediating}</p>
+              <p className="p-card__content u-text--muted">Remediating</p>
+            </div>
           </div>
         </div>
-        <div className="col-4">
-          <div className="p-card">
-            <p className="p-card__title">{stats.overdue}</p>
-            <p className="p-card__content u-text--muted">Overdue</p>
-          </div>
-        </div>
-        <div className="col-4">
-          <div className="p-card">
-            <p className="p-card__title">{stats.remediating}</p>
-            <p className="p-card__content u-text--muted">Remediating</p>
-          </div>
-        </div>
-      </div>
 
-      {/* Search */}
-      <div className="u-sv2">
-        <input
-          type="search"
-          className="p-form__input"
-          placeholder="Filter by product or squad…"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          aria-label="Search products"
-        />
-      </div>
+        {/* Search */}
+        <div className="u-sv2">
+          <input
+            type="search"
+            className="p-form__input"
+            placeholder="Filter by product or squad…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            aria-label="Search products"
+          />
+        </div>
 
-      {/* Heatmap */}
-      <h2 className="p-heading--4">Compliance heatmap</h2>
-      <div className="u-sv2" style={{ overflowX: 'auto' }}>
-        <table className="p-table--sortable">
-          <thead>
-            <tr>
-              <th>Product</th>
-              {dimensions.map(dim => (
-                <th key={dim}>
-                  <Link to={`/dimensions/${dim}`}>{dim.replace(/_/g, ' ')}</Link>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {products.map(product => (
-              <tr key={product.id}>
-                <td>
-                  <Link to={`/products/${product.id}`}>{product.name}</Link>
-                </td>
-                {dimensions.map(dim => {
-                  const d = product.dimensions[dim]
-                  return (
-                    <td key={dim}>
-                      {d ? <MedalBadge medal={d.medal} size="small" /> : <span>—</span>}
-                      {d?.drift && <DriftChip drift={d.drift} />}
+        {/* Heatmap */}
+        <div className="p-card u-sv3">
+          <h2 className="p-heading--4">Compliance heatmap</h2>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="p-table--sortable" style={{ tableLayout: 'fixed', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th style={{ width: '20%' }}>Product</th>
+                  {dimensions.map(dim => (
+                    <th key={dim} style={{ width: `${80 / dimensions.length}%` }}>
+                      <Link to={`/dimensions/${dim}`}>{dim.replace(/_/g, ' ')}</Link>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {products.map(product => (
+                  <tr key={product.id}>
+                    <td style={{ width: '20%' }}>
+                      <Link to={`/products/${product.id}`}>{product.name}</Link>
                     </td>
-                  )
-                })}
+                    {dimensions.map(dim => {
+                      const d = product.dimensions[dim]
+                      return (
+                        <td key={dim}>
+                          {d ? <MedalBadge medal={d.medal} size="small" /> : <span>—</span>}
+                          {d?.drift && <DriftChip drift={d.drift} />}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Product table */}
+        <div className="p-card u-sv3">
+          <h2 className="p-heading--4">Products</h2>
+          <table className="p-table--sortable">
+            <thead>
+              <tr>
+                <th
+                  aria-sort={getAriaSort('name')}
+                  onClick={() => toggleSort('name')}
+                  style={{ cursor: 'pointer', width: '30%' }}
+                >
+                  Product
+                </th>
+                <th
+                  aria-sort={getAriaSort('lifecycle')}
+                  onClick={() => toggleSort('lifecycle')}
+                  style={{ cursor: 'pointer', width: '10%' }}
+                >
+                  Lifecycle
+                </th>
+                <th style={{ width: '15%' }}>Target</th>
+                <th
+                  aria-sort={getAriaSort('current_medal')}
+                  onClick={() => toggleSort('current_medal')}
+                  style={{ cursor: 'pointer', width: '15%' }}
+                >
+                  Current
+                </th>
+                <th style={{ width: '20%' }}>Drift</th>
+                <th style={{ width: '10%' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map(product => {
+                const worstDrift = Object.values(product.dimensions)
+                  .map(d => d.drift)
+                  .find(d => d?.status === 'overdue') ??
+                  Object.values(product.dimensions).map(d => d.drift).find(d => d !== null) ?? null
+                return (
+                  <tr key={product.id}>
+                    <td>
+                      <Link to={`/products/${product.id}`}>{product.name}</Link>
+                    </td>
+                    <td>{product.lifecycle}</td>
+                    <td><MedalBadge medal={product.target_medal} size="small" /></td>
+                    <td><MedalBadge medal={product.current_medal} size="small" /></td>
+                    <td><DriftChip drift={worstDrift} /></td>
+                    <td>
+                      <Link to={`/products/${product.id}`} className="p-button--small">View</Link>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="u-text--muted u-sv1">
+          <small>Data generated at {new Date(portfolio.generated_at).toLocaleString()}</small>
+        </p>
+        <p>
+          <Link to="/about" className="p-button--neutral">
+            About this framework
+          </Link>
+        </p>
       </div>
-
-      {/* Product table */}
-      <h2 className="p-heading--4">Products</h2>
-      <table className="p-table--sortable">
-        <thead>
-          <tr>
-            <th
-              aria-sort={getAriaSort('name')}
-              onClick={() => toggleSort('name')}
-              style={{ cursor: 'pointer' }}
-            >
-              Product
-            </th>
-            <th
-              aria-sort={getAriaSort('lifecycle')}
-              onClick={() => toggleSort('lifecycle')}
-              style={{ cursor: 'pointer' }}
-            >
-              Lifecycle
-            </th>
-            <th>Target</th>
-            <th
-              aria-sort={getAriaSort('current_medal')}
-              onClick={() => toggleSort('current_medal')}
-              style={{ cursor: 'pointer' }}
-            >
-              Current
-            </th>
-            <th>Drift</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map(product => {
-            const worstDrift = Object.values(product.dimensions)
-              .map(d => d.drift)
-              .find(d => d?.status === 'overdue') ??
-              Object.values(product.dimensions).map(d => d.drift).find(d => d !== null) ?? null
-            return (
-              <tr key={product.id}>
-                <td>
-                  <Link to={`/products/${product.id}`}>{product.name}</Link>
-                </td>
-                <td>{product.lifecycle}</td>
-                <td><MedalBadge medal={product.target_medal} size="small" /></td>
-                <td><MedalBadge medal={product.current_medal} size="small" /></td>
-                <td><DriftChip drift={worstDrift} /></td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-
-      <p className="u-text--muted u-sv1">
-        <small>Data generated at {new Date(portfolio.generated_at).toLocaleString()}</small>
-      </p>
-      <p>
-        <Link to="/about" className="p-button--neutral">
-          About this framework
-        </Link>
-      </p>
     </div>
   )
 }

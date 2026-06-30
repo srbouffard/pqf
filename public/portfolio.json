@@ -111,6 +111,170 @@
           }
         }
       }
+    },
+    {
+      "id": "livepatch",
+      "name": "Livepatch",
+      "squad": "emea",
+      "lifecycle": "stable",
+      "target_medal": "gold",
+      "current_medal": "silver",
+      "documentation_url": "https://ubuntu.com/security/livepatch",
+      "dimensions": {
+        "test_verification": {
+          "medal": "silver",
+          "target": "gold",
+          "metrics": { "coverage_pct": 82, "stability_pct": 91, "latest_build_passing": true },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-01T00:00:00+00:00", "deadline": "2026-12-01T00:00:00+00:00" }
+        },
+        "documentation": {
+          "medal": "bronze",
+          "target": "gold",
+          "metrics": { "has_readme": true, "has_contributing": true, "has_security": true, "diataxis_coverage": 2, "style_linter_passing": false, "links_passing": true },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-01T00:00:00+00:00", "deadline": "2026-12-01T00:00:00+00:00" }
+        },
+        "substrate_compat": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "supports_juju_3": true, "supports_juju_4": true, "supports_ck8s": true },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "dependabot_enabled": true, "codeql_enabled": true },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "silver",
+          "target": "gold",
+          "metrics": { "avg_triage_days": 3, "avg_pr_review_days": 5 },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-15T00:00:00+00:00", "deadline": "2026-09-15T00:00:00+00:00" }
+        }
+      }
+    },
+    {
+      "id": "indico",
+      "name": "Indico",
+      "squad": "emea",
+      "lifecycle": "stable",
+      "target_medal": "silver",
+      "current_medal": "bronze",
+      "documentation_url": "https://charmhub.io/indico",
+      "dimensions": {
+        "test_verification": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": { "coverage_pct": 74, "stability_pct": 78, "latest_build_passing": true },
+          "drift": { "status": "remediating", "first_seen_at": "2026-04-01T00:00:00+00:00", "deadline": "2026-10-01T00:00:00+00:00" }
+        },
+        "documentation": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": { "has_readme": true, "has_contributing": true, "has_security": false, "diataxis_coverage": 1, "style_linter_passing": false, "links_passing": true },
+          "drift": { "status": "overdue", "first_seen_at": "2026-01-01T00:00:00+00:00", "deadline": "2026-06-01T00:00:00+00:00" }
+        },
+        "substrate_compat": {
+          "medal": "silver",
+          "target": "silver",
+          "metrics": { "supports_juju_3": true, "supports_juju_4": false, "supports_ck8s": false },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "silver",
+          "target": "silver",
+          "metrics": { "dependabot_enabled": true, "codeql_enabled": false },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": { "avg_triage_days": 7, "avg_pr_review_days": 9 },
+          "drift": { "status": "remediating", "first_seen_at": "2026-05-01T00:00:00+00:00", "deadline": "2026-11-01T00:00:00+00:00" }
+        }
+      }
+    },
+    {
+      "id": "mattermost",
+      "name": "Mattermost",
+      "squad": "americas",
+      "lifecycle": "stable",
+      "target_medal": "gold",
+      "current_medal": "gold",
+      "documentation_url": "https://charmhub.io/mattermost-k8s",
+      "dimensions": {
+        "test_verification": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "coverage_pct": 93, "stability_pct": 99, "latest_build_passing": true },
+          "drift": null
+        },
+        "documentation": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "has_readme": true, "has_contributing": true, "has_security": true, "diataxis_coverage": 4, "style_linter_passing": true, "links_passing": true },
+          "drift": null
+        },
+        "substrate_compat": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "supports_juju_3": true, "supports_juju_4": true, "supports_ck8s": true },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "dependabot_enabled": true, "codeql_enabled": true },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "gold",
+          "target": "gold",
+          "metrics": { "avg_triage_days": 1, "avg_pr_review_days": 2 },
+          "drift": null
+        }
+      }
+    },
+    {
+      "id": "landscape",
+      "name": "Landscape",
+      "squad": "emea",
+      "lifecycle": "stable",
+      "target_medal": "gold",
+      "current_medal": "bronze",
+      "documentation_url": "https://ubuntu.com/landscape",
+      "dimensions": {
+        "test_verification": {
+          "medal": "bronze",
+          "target": "gold",
+          "metrics": { "coverage_pct": 71, "stability_pct": 80, "latest_build_passing": true },
+          "drift": { "status": "remediating", "first_seen_at": "2026-05-01T00:00:00+00:00", "deadline": "2026-11-01T00:00:00+00:00" }
+        },
+        "documentation": {
+          "medal": "silver",
+          "target": "gold",
+          "metrics": { "has_readme": true, "has_contributing": true, "has_security": true, "diataxis_coverage": 4, "style_linter_passing": false, "links_passing": true },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-01T00:00:00+00:00", "deadline": "2026-12-01T00:00:00+00:00" }
+        },
+        "substrate_compat": {
+          "medal": "silver",
+          "target": "gold",
+          "metrics": { "supports_juju_3": true, "supports_juju_4": false, "supports_ck8s": false },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-01T00:00:00+00:00", "deadline": "2026-12-01T00:00:00+00:00" }
+        },
+        "security_ssdlc": {
+          "medal": "silver",
+          "target": "gold",
+          "metrics": { "dependabot_enabled": true, "codeql_enabled": false },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-01T00:00:00+00:00", "deadline": "2026-12-01T00:00:00+00:00" }
+        },
+        "support_engagement": {
+          "medal": "unrated",
+          "target": "gold",
+          "metrics": { "avg_triage_days": 0, "avg_pr_review_days": 0 },
+          "drift": { "status": "remediating", "first_seen_at": "2026-06-01T00:00:00+00:00", "deadline": "2026-12-01T00:00:00+00:00" }
+        }
+      }
     }
   ],
   "dimensions_meta": {

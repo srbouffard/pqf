@@ -1,0 +1,25 @@
+id: indico
+name: "Indico"
+description: "Event management platform for conferences and meetings"
+lifecycle: stable
+target_medal: silver
+ownership:
+  squad: emea
+  stakeholders:
+    - "Events Team"
+  users:
+    - "Internal Canonical"
+documentation_url: "https://charmhub.io/indico"
+allure_report_url: ""
+components:
+  foundational:
+    - id: indico-operator
+      type: charm
+      github_repo: canonical/indico-operator
+    - id: postgresql-k8s
+      type: charm
+      github_repo: canonical/postgresql-k8s-operator
+  auxiliary:
+    - id: redis-k8s
+      type: charm
+      github_repo: canonical/redis-k8s-operator
