@@ -1,0 +1,189 @@
+{
+  "generated_at": "2026-06-30T12:23:27.428352+00:00",
+  "products": [
+    {
+      "id": "matrix",
+      "name": "Matrix (Synapse)",
+      "description": "Open-standard chat for secure real-time collaboration",
+      "lifecycle": "stable",
+      "target_medal": "gold",
+      "current_medal": "unrated",
+      "squad": "americas",
+      "documentation_url": "https://charmhub.io/synapse",
+      "components": {
+        "foundational": [
+          {
+            "id": "synapse",
+            "type": "charm",
+            "github_repo": "canonical/synapse-operator"
+          },
+          {
+            "id": "postgresql-k8s",
+            "type": "charm",
+            "github_repo": "canonical/postgresql-k8s-operator"
+          }
+        ],
+        "feature": [
+          {
+            "id": "saml-integrator",
+            "type": "charm",
+            "github_repo": "canonical/saml-integrator-operator"
+          }
+        ],
+        "auxiliary": [
+          {
+            "id": "synapse-stats-exporter",
+            "type": "charm",
+            "github_repo": "canonical/synapse-operator"
+          }
+        ]
+      },
+      "dimensions": {
+        "test_verification": {
+          "medal": "unrated",
+          "target": "gold",
+          "metrics": {
+            "coverage_pct": 0,
+            "stability_pct": 0,
+            "latest_build_passing": false
+          },
+          "drift": null
+        },
+        "documentation": {
+          "medal": "unrated",
+          "target": "gold",
+          "metrics": {
+            "has_readme": true,
+            "has_contributing": true,
+            "has_security": false,
+            "diataxis_coverage": 0,
+            "style_linter_passing": false,
+            "links_passing": true
+          },
+          "drift": null
+        },
+        "substrate_compat": {
+          "medal": "bronze",
+          "target": "gold",
+          "metrics": {
+            "supports_juju_3": false,
+            "supports_juju_4": false,
+            "supports_ck8s": false
+          },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "bronze",
+          "target": "gold",
+          "metrics": {
+            "dependabot_enabled": false,
+            "codeql_enabled": false
+          },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "bronze",
+          "target": "gold",
+          "metrics": {
+            "avg_triage_days": 364.6,
+            "avg_pr_review_days": 0.4
+          },
+          "drift": null
+        }
+      }
+    }
+  ],
+  "dimensions_meta": {
+    "test_verification": {
+      "medals": {
+        "bronze": {
+          "criteria": [
+            "coverage_pct >= 70",
+            "latest_build_passing == true"
+          ]
+        },
+        "silver": {
+          "criteria": [
+            "coverage_pct >= 80",
+            "stability_pct >= 85"
+          ]
+        },
+        "gold": {
+          "criteria": [
+            "coverage_pct >= 90",
+            "stability_pct >= 98"
+          ]
+        }
+      }
+    },
+    "documentation": {
+      "medals": {
+        "bronze": {
+          "criteria": [
+            "has_readme == true",
+            "has_contributing == true",
+            "has_security == true",
+            "links_passing == true"
+          ]
+        },
+        "silver": {
+          "criteria": [
+            "diataxis_coverage >= 4"
+          ]
+        },
+        "gold": {
+          "criteria": [
+            "style_linter_passing == true",
+            "diataxis_coverage == 4"
+          ]
+        }
+      }
+    },
+    "substrate_compat": {
+      "medals": {
+        "silver": {
+          "criteria": [
+            "supports_juju_3 == true"
+          ]
+        },
+        "gold": {
+          "criteria": [
+            "supports_juju_4 == true",
+            "supports_ck8s == true"
+          ]
+        }
+      }
+    },
+    "security_ssdlc": {
+      "medals": {
+        "silver": {
+          "criteria": [
+            "dependabot_enabled == true"
+          ]
+        },
+        "gold": {
+          "criteria": [
+            "dependabot_enabled == true",
+            "codeql_enabled == true"
+          ]
+        }
+      }
+    },
+    "support_engagement": {
+      "medals": {
+        "silver": {
+          "criteria": [
+            "avg_triage_days <= 5",
+            "avg_pr_review_days <= 7"
+          ]
+        },
+        "gold": {
+          "criteria": [
+            "avg_triage_days <= 2",
+            "avg_pr_review_days <= 3"
+          ]
+        }
+      }
+    }
+  }
+}
