@@ -14,7 +14,7 @@ export default function GlobalNav() {
             <a className="p-navigation__link" href="#/">
               <img
                 className="p-navigation__logo-icon"
-                src="https://assets.ubuntu.com/v1/9dbbf37c-canonical-ubuntu.svg"
+                src="https://assets.ubuntu.com/v1/5d6da5c4-logo-canonical-aubergine.svg"
                 alt="Canonical"
                 width="32"
                 height="32"

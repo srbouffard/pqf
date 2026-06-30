@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import type { Portfolio } from '../types'
 
 async function fetchPortfolio(): Promise<Portfolio> {
-  // Use absolute path so fetch works correctly regardless of hash route
-  const res = await fetch('/portfolio.json')
+  // Use BASE_URL so the path resolves correctly on GH Pages subpath (/pqf/)
+  const res = await fetch(`${import.meta.env.BASE_URL}portfolio.json`)
   if (!res.ok) throw new Error(`Failed to fetch portfolio: ${res.status}`)
   return res.json()
 }
