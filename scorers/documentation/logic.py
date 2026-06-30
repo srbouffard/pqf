@@ -118,23 +118,29 @@ def compute_metrics(
     doc_url = product.get("documentation_url", "").strip()
     links_passing = _check_url_alive(doc_url) if doc_url else False
 
-    readme_content = _fetch_readme(primary, github_token) if primary else ""
-    diataxis_result = _evaluate_docs(
-        readme_content,
-        _PROMPTS_DIR / "diataxis_check.md",
-        openrouter_api_key,
-    )
-    style_result = _evaluate_docs(
-        readme_content,
-        _PROMPTS_DIR / "style_review.md",
-        openrouter_api_key,
-    )
+    if openrouter_api_key:
+        readme_content = _fetch_readme(primary, github_token) if primary else ""
+        diataxis_result = _evaluate_docs(
+            readme_content,
+            _PROMPTS_DIR / "diataxis_check.md",
+            openrouter_api_key,
+        )
+        style_result = _evaluate_docs(
+            readme_content,
+            _PROMPTS_DIR / "style_review.md",
+            openrouter_api_key,
+        )
+        diataxis_coverage = int(diataxis_result.get("diataxis_coverage", 0))
+        style_linter_passing = bool(style_result.get("style_linter_passing", False))
+    else:
+        diataxis_coverage = 0
+        style_linter_passing = False
 
     return {
         "has_readme": has_readme,
         "has_contributing": has_contributing,
         "has_security": has_security,
-        "diataxis_coverage": int(diataxis_result.get("diataxis_coverage", 0)),
-        "style_linter_passing": bool(style_result.get("style_linter_passing", False)),
+        "diataxis_coverage": diataxis_coverage,
+        "style_linter_passing": style_linter_passing,
         "links_passing": links_passing,
     }

@@ -110,3 +110,19 @@ def test_compute_metrics_happy_path(mocker):
     assert result["links_passing"] is True
     assert result["diataxis_coverage"] == 2
     assert result["style_linter_passing"] is False
+
+
+def test_compute_metrics_skips_llm_when_no_api_key(mocker):
+    """When OPENROUTER_API_KEY is empty, LLM metrics default to 0/False."""
+    mocker.patch(
+        "scorers.documentation.logic._check_file_exists",
+        side_effect=lambda repo, fname, token: fname == "README.md",
+    )
+    mocker.patch("scorers.documentation.logic._check_url_alive", return_value=False)
+    mock_llm = mocker.patch("scorers.documentation.logic._make_openrouter_client")
+
+    result = compute_metrics(_PRODUCT, "gh-token", "")
+    assert result["has_readme"] is True
+    assert result["diataxis_coverage"] == 0
+    assert result["style_linter_passing"] is False
+    mock_llm.assert_not_called()
