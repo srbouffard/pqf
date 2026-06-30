@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/test-setup.ts","./src/types.ts","./src/components/GlobalNav.test.tsx","./src/components/GlobalNav.tsx","./src/components/LoadingSpinner.tsx","./src/hooks/usePortfolio.ts","./src/views/About.tsx","./src/views/DimensionDetail.tsx","./src/views/Overview.tsx","./src/views/ProductDetail.tsx"],"version":"5.8.3"}
