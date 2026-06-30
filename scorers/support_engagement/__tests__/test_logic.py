@@ -1,6 +1,6 @@
 import responses
-import pytest
-from scorers.support_engagement.logic import compute_metrics, _compute_avg_triage_days
+
+from scorers.support_engagement.logic import compute_metrics
 
 _GITHUB_API = "https://api.github.com"
 
@@ -45,7 +45,6 @@ _REVIEWS_PR_10 = [
 
 @responses.activate
 def test_avg_triage_days_computed_correctly():
-    since = "2026-03-01T00:00:00Z"  # value doesn't matter for mock
     responses.add(
         responses.GET,
         f"{_GITHUB_API}/repos/canonical/synapse-operator/issues",

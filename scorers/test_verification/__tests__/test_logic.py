@@ -1,5 +1,6 @@
-import responses
 import pytest
+import responses
+
 from scorers.test_verification.logic import compute_metrics
 
 _SUMMARY = {

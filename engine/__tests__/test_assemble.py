@@ -1,8 +1,7 @@
 # engine/__tests__/test_assemble.py
 import json
-import pytest
-from pathlib import Path
-from engine.assemble import assemble_portfolio, _build_dimensions_meta
+
+from engine.assemble import _build_dimensions_meta, assemble_portfolio
 
 _DIMENSIONS = {
     "dimensions": {
@@ -31,8 +30,15 @@ _COMPUTED = {
     "product_id": "matrix",
     "computed_at": "2026-06-29T20:00:00+00:00",
     "metrics": {
-        "test_verification": {"coverage_pct": 90, "latest_build_passing": True},
-        "documentation": {"has_readme": True, "diataxis_coverage": 2, "style_linter_passing": False},
+        "test_verification": {
+            "coverage_pct": 90,
+            "latest_build_passing": True,
+        },
+        "documentation": {
+            "has_readme": True,
+            "diataxis_coverage": 2,
+            "style_linter_passing": False,
+        },
     },
 }
 
@@ -75,7 +81,8 @@ def test_assemble_portfolio_medal_computed_correctly(tmp_path):
         dimensions_config=_DIMENSIONS, drift_history={}, update_drift=False,
     )
     product = result["products"][0]
-    # test_verification: coverage 90 → gold; documentation: has_readme=True bronze, diataxis 2 < 4 → bronze
+    # test_verification: coverage 90 → gold
+    # documentation: has_readme=True bronze, diataxis 2 < 4 → bronze
     # overall current_medal = min(gold, bronze) = bronze
     assert product["current_medal"] == "bronze"
 

@@ -1,7 +1,9 @@
 # scorers/substrate_compat/__tests__/test_logic.py
 import base64
+
 import responses
-from scorers.substrate_compat.logic import compute_metrics, _fetch_workflow_contents
+
+from scorers.substrate_compat.logic import compute_metrics
 
 _GITHUB_API = "https://api.github.com"
 
@@ -122,7 +124,11 @@ def test_scans_all_foundational_repos():
     _mock_workflows_dir("canonical/synapse-operator", ["integration.yaml"])
     _mock_workflow_file("canonical/synapse-operator", "integration.yaml", _JUJU3_WORKFLOW)
     _mock_workflows_dir("canonical/postgresql-k8s-operator", ["integration.yaml"])
-    _mock_workflow_file("canonical/postgresql-k8s-operator", "integration.yaml", _JUJU4_CK8S_WORKFLOW)
+    _mock_workflow_file(
+        "canonical/postgresql-k8s-operator",
+        "integration.yaml",
+        _JUJU4_CK8S_WORKFLOW,
+    )
     result = compute_metrics(_PRODUCT_TWO_REPOS, "token")
     assert result["supports_juju_3"] is True
     assert result["supports_juju_4"] is True

@@ -18,7 +18,7 @@ Usage:
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -49,7 +49,7 @@ def main() -> int:
 
     output = {
         "product_id": args.product_id,
-        "computed_at": datetime.now(timezone.utc).isoformat(),
+        "computed_at": datetime.now(UTC).isoformat(),
         "metrics": metrics,
     }
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)

@@ -1,5 +1,5 @@
 # scorers/support_engagement/logic.py
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import requests
@@ -88,7 +88,7 @@ def compute_metrics(product: dict[str, Any], github_token: str) -> dict[str, Any
         return {"avg_triage_days": 0.0, "avg_pr_review_days": 0.0}
 
     session = _make_github_session(github_token)
-    since = (datetime.now(timezone.utc) - timedelta(days=_LOOKBACK_DAYS)).isoformat()
+    since = (datetime.now(UTC) - timedelta(days=_LOOKBACK_DAYS)).isoformat()
 
     all_issue_times: list[float] = []
     all_pr_times: list[float] = []

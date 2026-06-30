@@ -1,5 +1,7 @@
 import base64
+
 import responses
+
 from scorers.security_ssdlc.logic import compute_metrics
 
 _GITHUB_API = "https://api.github.com"

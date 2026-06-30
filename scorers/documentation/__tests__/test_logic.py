@@ -1,12 +1,12 @@
-import json
-import responses
-import pytest
 from unittest.mock import MagicMock
+
+import responses
+
 from scorers.documentation.logic import (
-    compute_metrics,
-    _primary_repo,
     _check_file_exists,
     _check_url_alive,
+    _primary_repo,
+    compute_metrics,
 )
 
 _PRODUCT = {
@@ -71,7 +71,8 @@ def test_check_url_alive_false_on_404():
 def test_compute_metrics_happy_path(mocker):
     mocker.patch(
         "scorers.documentation.logic._check_file_exists",
-        side_effect=lambda repo, fname, token: fname in {"README.md", "CONTRIBUTING.md", "SECURITY.md"},
+        side_effect=lambda repo, fname, token: fname
+        in {"README.md", "CONTRIBUTING.md", "SECURITY.md"},
     )
     mocker.patch("scorers.documentation.logic._check_url_alive", return_value=True)
     mocker.patch(
@@ -82,8 +83,24 @@ def test_compute_metrics_happy_path(mocker):
     mocker.patch("scorers.documentation.logic._make_openrouter_client", return_value=mock_client)
     # Patch style call separately on second invocation
     mock_client.chat.completions.create.side_effect = [
-        MagicMock(choices=[MagicMock(message=MagicMock(content='{"diataxis_coverage": 2, "reasoning": "ok"}'))]),
-        MagicMock(choices=[MagicMock(message=MagicMock(content='{"style_linter_passing": false, "reasoning": "ok"}'))]),
+        MagicMock(
+            choices=[
+                MagicMock(
+                    message=MagicMock(
+                        content='{"diataxis_coverage": 2, "reasoning": "ok"}'
+                    )
+                )
+            ]
+        ),
+        MagicMock(
+            choices=[
+                MagicMock(
+                    message=MagicMock(
+                        content='{"style_linter_passing": false, "reasoning": "ok"}'
+                    )
+                )
+            ]
+        ),
     ]
 
     result = compute_metrics(_PRODUCT, "gh-token", "or-key")

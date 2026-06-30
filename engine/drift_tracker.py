@@ -1,5 +1,5 @@
 # engine/drift_tracker.py
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from dateutil.relativedelta import relativedelta
 
@@ -36,9 +36,9 @@ def compute_dimension_drift(
 
     deadline_dt = datetime.fromisoformat(entry["deadline"])
     if deadline_dt.tzinfo is None:
-        deadline_dt = deadline_dt.replace(tzinfo=timezone.utc)
+        deadline_dt = deadline_dt.replace(tzinfo=UTC)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     status = "overdue" if now > deadline_dt else "remediating"
 
     return DriftState(

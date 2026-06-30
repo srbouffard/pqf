@@ -101,9 +101,19 @@ def compute_metrics(
     diataxis_coverage and style_linter_passing are evaluated by Gemini via OpenRouter.
     """
     primary = _primary_repo(product)
-    has_readme = _check_file_exists(primary, "README.md", github_token) if primary else False
-    has_contributing = _check_file_exists(primary, "CONTRIBUTING.md", github_token) if primary else False
-    has_security = _check_file_exists(primary, "SECURITY.md", github_token) if primary else False
+    has_readme = (
+        _check_file_exists(primary, "README.md", github_token) if primary else False
+    )
+    has_contributing = (
+        _check_file_exists(primary, "CONTRIBUTING.md", github_token)
+        if primary
+        else False
+    )
+    has_security = (
+        _check_file_exists(primary, "SECURITY.md", github_token)
+        if primary
+        else False
+    )
 
     doc_url = product.get("documentation_url", "").strip()
     links_passing = _check_url_alive(doc_url) if doc_url else False

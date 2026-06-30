@@ -4,7 +4,6 @@ from typing import Any
 
 from engine.models import Medal
 
-
 _OPS: dict[str, Any] = {
     ">=": op_module.ge,
     "<=": op_module.le,

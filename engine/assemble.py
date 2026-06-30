@@ -15,7 +15,7 @@ Usage:
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -77,7 +77,7 @@ def assemble_portfolio(
     Mutates drift_history in place when update_drift=True.
     """
     products = []
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     for product_path in sorted(products_dir.glob("*.yaml")):
         if product_path.name.startswith("."):
