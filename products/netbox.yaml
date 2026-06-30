@@ -1,0 +1,18 @@
+id: netbox
+name: "NetBox"
+description: "The world's most popular ecosystem for operating, automating, and securing networks and infrastructure."
+lifecycle: stable
+target_medal: bronze
+ownership:
+  squad: emea
+  stakeholders:
+    - "IS"
+  users:
+    - "IS Network team"
+documentation_url: "https://netboxlabs.com/"
+allure_report_url: ""
+components:
+  foundational:
+    - id: netbox-k8s
+      type: charm
+      github_repo: canonical/netbox-k8s-operator

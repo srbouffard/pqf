@@ -1,0 +1,30 @@
+id: discourse
+name: "Discourse"
+description: "An open-source, community- and customer-friendly discussion platform."
+lifecycle: stable
+target_medal: silver
+ownership:
+  squad: americas
+  stakeholders:
+    - "IS"
+    - "Community Team"
+  users:
+    - "Internal Canonical"
+    - "Ubuntu community"
+documentation_url: "https://charmhub.io/discourse-k8s"
+allure_report_url: ""
+components:
+  foundational:
+    - id: discourse-k8s
+      type: charm
+      github_repo: canonical/discourse-k8s-operator
+  auxiliary:
+    - id: postgresql-k8s
+      type: charm
+      github_repo: canonical/postgresql-k8s-operator
+    - id: redis-k8s
+      type: charm
+      github_repo: canonical/redis-k8s-operator
+    - id: nginx-ingress-integrator
+      type: charm
+      github_repo: canonical/nginx-ingress-integrator-operator

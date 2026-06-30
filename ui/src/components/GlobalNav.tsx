@@ -9,7 +9,7 @@ export default function GlobalNav() {
   }
 
   return (
-    <header className="p-navigation">
+    <header className="p-navigation is-dark">
       <div className="p-navigation__row">
         <div className="p-navigation__banner">
           <div className="p-navigation__tagged-logo">

@@ -30,13 +30,13 @@ export interface Components {
 export interface Product {
   id: string
   name: string
-  description: string
+  description?: string
   lifecycle: Lifecycle
   target_medal: Medal
   current_medal: Medal
   squad: string
   documentation_url?: string
-  components: Components
+  components?: Components
   dimensions: Record<string, DimensionEntry>
 }
 

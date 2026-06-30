@@ -1,0 +1,25 @@
+id: jenkins
+name: "Jenkins"
+description: "An open source automation server for building, deploying and automating projects."
+lifecycle: stable
+target_medal: bronze
+ownership:
+  squad: apac
+  stakeholders:
+    - "IS"
+  users:
+    - "Development teams"
+documentation_url: "https://charmhub.io/jenkins-k8s/docs"
+allure_report_url: ""
+components:
+  foundational:
+    - id: jenkins-k8s
+      type: charm
+      github_repo: canonical/jenkins-k8s-operator
+  feature:
+    - id: jenkins-agent-k8s
+      type: charm
+      github_repo: canonical/jenkins-agent-k8s-operator
+    - id: jenkins-agent
+      type: charm
+      github_repo: canonical/jenkins-agent-operator

@@ -106,43 +106,6 @@ export default function Overview() {
           />
         </div>
 
-        {/* Heatmap */}
-        <div className="p-card u-sv3">
-          <h2 className="p-heading--4">Compliance heatmap</h2>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="p-table--sortable" style={{ tableLayout: 'fixed', width: '100%' }}>
-              <thead>
-                <tr>
-                  <th style={{ width: '20%' }}>Product</th>
-                  {dimensions.map(dim => (
-                    <th key={dim} style={{ width: `${80 / dimensions.length}%` }}>
-                      <Link to={`/dimensions/${dim}`}>{dim.replace(/_/g, ' ')}</Link>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {products.map(product => (
-                  <tr key={product.id}>
-                    <td style={{ width: '20%' }}>
-                      <Link to={`/products/${product.id}`}>{product.name}</Link>
-                    </td>
-                    {dimensions.map(dim => {
-                      const d = product.dimensions[dim]
-                      return (
-                        <td key={dim}>
-                          {d ? <MedalBadge medal={d.medal} size="small" /> : <span>—</span>}
-                          {d?.drift && <DriftChip drift={d.drift} />}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
         {/* Product table */}
         <div className="p-card u-sv3">
           <h2 className="p-heading--4">Products</h2>
@@ -191,13 +154,49 @@ export default function Overview() {
                     <td><MedalBadge medal={product.current_medal} size="small" /></td>
                     <td><DriftChip drift={worstDrift} /></td>
                     <td>
-                      <Link to={`/products/${product.id}`} className="p-button--small">View</Link>
+                      <Link to={`/products/${product.id}`} className="p-button is-small">View</Link>
                     </td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
+        </div>
+
+        {/* Heatmap */}
+        <div className="p-card u-sv3">
+          <h2 className="p-heading--4">Compliance heatmap</h2>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="p-table--sortable" style={{ tableLayout: 'fixed', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th style={{ width: '20%' }}>Product</th>
+                  {dimensions.map(dim => (
+                    <th key={dim} style={{ width: `${80 / dimensions.length}%` }}>
+                      <Link to={`/dimensions/${dim}`}>{dim.replace(/_/g, ' ')}</Link>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {products.map(product => (
+                  <tr key={product.id}>
+                    <td style={{ width: '20%' }}>
+                      <Link to={`/products/${product.id}`}>{product.name}</Link>
+                    </td>
+                    {dimensions.map(dim => {
+                      const d = product.dimensions[dim]
+                      return (
+                        <td key={dim}>
+                          {d ? <MedalBadge medal={d.medal} size="small" /> : <span>—</span>}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <p className="u-text--muted u-sv1">

@@ -4,6 +4,7 @@ import MedalBadge from '../components/MedalBadge'
 import DriftChip from '../components/DriftChip'
 import MetricsList from '../components/MetricsList'
 import LoadingSpinner from '../components/LoadingSpinner'
+import type { Components } from '../types'
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>()
@@ -22,7 +23,7 @@ export default function ProductDetail() {
     )
   }
 
-  const componentGroups: Array<{ label: string; key: keyof typeof product.components }> = [
+  const componentGroups: Array<{ label: string; key: keyof Components }> = [
     { label: 'Foundational', key: 'foundational' },
     { label: 'Feature', key: 'feature' },
     { label: 'Auxiliary', key: 'auxiliary' },
@@ -76,31 +77,35 @@ export default function ProductDetail() {
         </tbody>
       </table>
 
-      <h2 className="p-heading--4">Components</h2>
-      {componentGroups.map(({ label, key }) => {
-        const items = product.components[key]
-        if (!items || items.length === 0) return null
-        return (
-          <div key={key} className="u-sv2">
-            <h3 className="p-heading--5">{label}</h3>
-            <ul className="p-list">
-              {items.map(c => (
-                <li key={c.id} className="p-list__item">
-                  <strong>{c.id}</strong>{' '}
-                  <span className="p-label">{c.type}</span>{' '}
-                  <a
-                    href={`https://github.com/${c.github_repo}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {c.github_repo}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )
-      })}
+      {product.components && (
+        <>
+          <h2 className="p-heading--4">Components</h2>
+          {componentGroups.map(({ label, key }) => {
+            const items = product.components![key]
+            if (!items || items.length === 0) return null
+            return (
+              <div key={key} className="u-sv2">
+                <h3 className="p-heading--5">{label}</h3>
+                <ul className="p-list">
+                  {items.map(c => (
+                    <li key={c.id} className="p-list__item">
+                      <strong>{c.id}</strong>{' '}
+                      <span className="p-label">{c.type}</span>{' '}
+                      <a
+                        href={`https://github.com/${c.github_repo}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {c.github_repo}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          })}
+        </>
+      )}
       </div>
     </div>
   )
