@@ -1,6 +1,95 @@
 {
-  "generated_at": "2026-06-30T16:03:48.224357+00:00",
+  "generated_at": "2026-06-30T17:00:20.537842+00:00",
   "products": [
+    {
+      "id": "discourse",
+      "name": "Discourse",
+      "description": "An open-source, community- and customer-friendly discussion platform.",
+      "lifecycle": "stable",
+      "target_medal": "silver",
+      "current_medal": "unrated",
+      "squad": "americas",
+      "documentation_url": "https://charmhub.io/discourse-k8s",
+      "components": {
+        "foundational": [
+          {
+            "id": "discourse-k8s",
+            "type": "charm",
+            "github_repo": "canonical/discourse-k8s-operator"
+          }
+        ],
+        "auxiliary": [
+          {
+            "id": "postgresql-k8s",
+            "type": "charm",
+            "github_repo": "canonical/postgresql-k8s-operator"
+          },
+          {
+            "id": "redis-k8s",
+            "type": "charm",
+            "github_repo": "canonical/redis-k8s-operator"
+          },
+          {
+            "id": "nginx-ingress-integrator",
+            "type": "charm",
+            "github_repo": "canonical/nginx-ingress-integrator-operator"
+          }
+        ]
+      },
+      "dimensions": {
+        "test_verification": {
+          "medal": "unrated",
+          "target": "silver",
+          "metrics": {
+            "coverage_pct": 0,
+            "stability_pct": 0,
+            "latest_build_passing": false
+          },
+          "drift": null
+        },
+        "documentation": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "has_readme": true,
+            "has_contributing": true,
+            "has_security": true,
+            "diataxis_coverage": 0,
+            "style_linter_passing": false,
+            "links_passing": true
+          },
+          "drift": null
+        },
+        "substrate_compat": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "supports_juju_3": false,
+            "supports_juju_4": false,
+            "supports_ck8s": false
+          },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "dependabot_enabled": false,
+            "codeql_enabled": false
+          },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "avg_triage_days": 216.0,
+            "avg_pr_review_days": 1.9
+          },
+          "drift": null
+        }
+      }
+    },
     {
       "id": "indico",
       "name": "Indico",
@@ -40,7 +129,11 @@
             "stability_pct": 0,
             "latest_build_passing": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2027-06-30T16:03:48.224357+00:00"
+          }
         },
         "documentation": {
           "medal": "unrated",
@@ -53,7 +146,11 @@
             "style_linter_passing": false,
             "links_passing": true
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2027-06-30T16:03:48.224357+00:00"
+          }
         },
         "substrate_compat": {
           "medal": "bronze",
@@ -63,7 +160,11 @@
             "supports_juju_4": false,
             "supports_ck8s": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2027-06-30T16:03:48.224357+00:00"
+          }
         },
         "security_ssdlc": {
           "medal": "bronze",
@@ -72,7 +173,11 @@
             "dependabot_enabled": false,
             "codeql_enabled": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2027-06-30T16:03:48.224357+00:00"
+          }
         },
         "support_engagement": {
           "medal": "bronze",
@@ -81,49 +186,48 @@
             "avg_triage_days": 731.1,
             "avg_pr_review_days": 0.6
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2027-06-30T16:03:48.224357+00:00"
+          }
         }
       }
     },
     {
-      "id": "landscape",
-      "name": "Landscape",
-      "description": "Ubuntu systems management and compliance platform",
+      "id": "jenkins",
+      "name": "Jenkins",
+      "description": "An open source automation server for building, deploying and automating projects.",
       "lifecycle": "stable",
-      "target_medal": "gold",
+      "target_medal": "bronze",
       "current_medal": "unrated",
-      "squad": "emea",
-      "documentation_url": "https://ubuntu.com/landscape",
+      "squad": "apac",
+      "documentation_url": "https://charmhub.io/jenkins-k8s/docs",
       "components": {
         "foundational": [
           {
-            "id": "landscape-server",
+            "id": "jenkins-k8s",
             "type": "charm",
-            "github_repo": "canonical/landscape-charmed"
-          },
-          {
-            "id": "postgresql",
-            "type": "charm",
-            "github_repo": "canonical/postgresql-operator"
-          },
-          {
-            "id": "haproxy",
-            "type": "charm",
-            "github_repo": "canonical/haproxy-operator"
+            "github_repo": "canonical/jenkins-k8s-operator"
           }
         ],
-        "auxiliary": [
+        "feature": [
           {
-            "id": "rabbitmq-server",
+            "id": "jenkins-agent-k8s",
             "type": "charm",
-            "github_repo": "canonical/rabbitmq-operator"
+            "github_repo": "canonical/jenkins-agent-k8s-operator"
+          },
+          {
+            "id": "jenkins-agent",
+            "type": "charm",
+            "github_repo": "canonical/jenkins-agent-operator"
           }
         ]
       },
       "dimensions": {
         "test_verification": {
           "medal": "unrated",
-          "target": "gold",
+          "target": "bronze",
           "metrics": {
             "coverage_pct": 0,
             "stability_pct": 0,
@@ -132,89 +236,12 @@
           "drift": null
         },
         "documentation": {
-          "medal": "unrated",
-          "target": "gold",
-          "metrics": {
-            "has_readme": false,
-            "has_contributing": false,
-            "has_security": false,
-            "diataxis_coverage": 0,
-            "style_linter_passing": false,
-            "links_passing": true
-          },
-          "drift": null
-        },
-        "substrate_compat": {
           "medal": "bronze",
-          "target": "gold",
-          "metrics": {
-            "supports_juju_3": false,
-            "supports_juju_4": false,
-            "supports_ck8s": false
-          },
-          "drift": null
-        },
-        "security_ssdlc": {
-          "medal": "bronze",
-          "target": "gold",
-          "metrics": {
-            "dependabot_enabled": false,
-            "codeql_enabled": false
-          },
-          "drift": null
-        },
-        "support_engagement": {
-          "medal": "gold",
-          "target": "gold",
-          "metrics": {
-            "avg_triage_days": 0.0,
-            "avg_pr_review_days": 0.8
-          },
-          "drift": null
-        }
-      }
-    },
-    {
-      "id": "livepatch",
-      "name": "Livepatch",
-      "description": "Live kernel patching service for Ubuntu",
-      "lifecycle": "stable",
-      "target_medal": "gold",
-      "current_medal": "unrated",
-      "squad": "emea",
-      "documentation_url": "https://ubuntu.com/security/livepatch",
-      "components": {
-        "foundational": [
-          {
-            "id": "livepatch-machine-charm",
-            "type": "charm",
-            "github_repo": "canonical/livepatch-machine-charm"
-          },
-          {
-            "id": "livepatch-k8s-operator",
-            "type": "charm",
-            "github_repo": "canonical/livepatch-k8s-operator"
-          }
-        ]
-      },
-      "dimensions": {
-        "test_verification": {
-          "medal": "unrated",
-          "target": "gold",
-          "metrics": {
-            "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
-          },
-          "drift": null
-        },
-        "documentation": {
-          "medal": "unrated",
-          "target": "gold",
+          "target": "bronze",
           "metrics": {
             "has_readme": true,
             "has_contributing": true,
-            "has_security": false,
+            "has_security": true,
             "diataxis_coverage": 0,
             "style_linter_passing": false,
             "links_passing": true
@@ -222,10 +249,10 @@
           "drift": null
         },
         "substrate_compat": {
-          "medal": "bronze",
-          "target": "gold",
+          "medal": "silver",
+          "target": "bronze",
           "metrics": {
-            "supports_juju_3": false,
+            "supports_juju_3": true,
             "supports_juju_4": false,
             "supports_ck8s": false
           },
@@ -233,7 +260,7 @@
         },
         "security_ssdlc": {
           "medal": "bronze",
-          "target": "gold",
+          "target": "bronze",
           "metrics": {
             "dependabot_enabled": false,
             "codeql_enabled": false
@@ -241,11 +268,11 @@
           "drift": null
         },
         "support_engagement": {
-          "medal": "gold",
-          "target": "gold",
+          "medal": "bronze",
+          "target": "bronze",
           "metrics": {
-            "avg_triage_days": 0.0,
-            "avg_pr_review_days": 0.3
+            "avg_triage_days": 147.8,
+            "avg_pr_review_days": 1.1
           },
           "drift": null
         }
@@ -394,7 +421,11 @@
             "stability_pct": 0,
             "latest_build_passing": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2026-12-30T16:03:48.224357+00:00"
+          }
         },
         "documentation": {
           "medal": "bronze",
@@ -407,7 +438,11 @@
             "style_linter_passing": false,
             "links_passing": true
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2026-12-30T16:03:48.224357+00:00"
+          }
         },
         "substrate_compat": {
           "medal": "silver",
@@ -417,7 +452,11 @@
             "supports_juju_4": true,
             "supports_ck8s": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2026-12-30T16:03:48.224357+00:00"
+          }
         },
         "security_ssdlc": {
           "medal": "bronze",
@@ -426,7 +465,11 @@
             "dependabot_enabled": false,
             "codeql_enabled": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2026-12-30T16:03:48.224357+00:00"
+          }
         },
         "support_engagement": {
           "medal": "bronze",
@@ -434,6 +477,255 @@
           "metrics": {
             "avg_triage_days": 315.1,
             "avg_pr_review_days": 2.6
+          },
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
+            "deadline": "2026-12-30T16:03:48.224357+00:00"
+          }
+        }
+      }
+    },
+    {
+      "id": "netbox",
+      "name": "NetBox",
+      "description": "The world's most popular ecosystem for operating, automating, and securing networks and infrastructure.",
+      "lifecycle": "stable",
+      "target_medal": "bronze",
+      "current_medal": "unrated",
+      "squad": "emea",
+      "documentation_url": "https://netboxlabs.com/",
+      "components": {
+        "foundational": [
+          {
+            "id": "netbox-k8s",
+            "type": "charm",
+            "github_repo": "canonical/netbox-k8s-operator"
+          }
+        ]
+      },
+      "dimensions": {
+        "test_verification": {
+          "medal": "unrated",
+          "target": "bronze",
+          "metrics": {
+            "coverage_pct": 0,
+            "stability_pct": 0,
+            "latest_build_passing": false
+          },
+          "drift": null
+        },
+        "documentation": {
+          "medal": "unrated",
+          "target": "bronze",
+          "metrics": {
+            "has_readme": true,
+            "has_contributing": true,
+            "has_security": false,
+            "diataxis_coverage": 0,
+            "style_linter_passing": false,
+            "links_passing": true
+          },
+          "drift": null
+        },
+        "substrate_compat": {
+          "medal": "bronze",
+          "target": "bronze",
+          "metrics": {
+            "supports_juju_3": false,
+            "supports_juju_4": false,
+            "supports_ck8s": false
+          },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "bronze",
+          "target": "bronze",
+          "metrics": {
+            "dependabot_enabled": false,
+            "codeql_enabled": false
+          },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "silver",
+          "target": "bronze",
+          "metrics": {
+            "avg_triage_days": 0.0,
+            "avg_pr_review_days": 4.6
+          },
+          "drift": null
+        }
+      }
+    },
+    {
+      "id": "wazuh",
+      "name": "Wazuh",
+      "description": "A platform that unifies XDR and SIEM protection for endpoints and cloud workloads.",
+      "lifecycle": "stable",
+      "target_medal": "silver",
+      "current_medal": "unrated",
+      "squad": "emea",
+      "documentation_url": "https://wazuh.com/",
+      "components": {
+        "foundational": [
+          {
+            "id": "wazuh-server",
+            "type": "charm",
+            "github_repo": "canonical/wazuh-server-operator"
+          },
+          {
+            "id": "wazuh-indexer",
+            "type": "charm",
+            "github_repo": "canonical/wazuh-indexer-operator"
+          },
+          {
+            "id": "wazuh-dashboard",
+            "type": "charm",
+            "github_repo": "canonical/wazuh-dashboard-operator"
+          }
+        ],
+        "feature": [
+          {
+            "id": "traefik-k8s",
+            "type": "charm",
+            "github_repo": "canonical/traefik-k8s-operator"
+          }
+        ]
+      },
+      "dimensions": {
+        "test_verification": {
+          "medal": "unrated",
+          "target": "silver",
+          "metrics": {
+            "coverage_pct": 0,
+            "stability_pct": 0,
+            "latest_build_passing": false
+          },
+          "drift": null
+        },
+        "documentation": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "has_readme": true,
+            "has_contributing": true,
+            "has_security": true,
+            "diataxis_coverage": 0,
+            "style_linter_passing": false,
+            "links_passing": true
+          },
+          "drift": null
+        },
+        "substrate_compat": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "supports_juju_3": false,
+            "supports_juju_4": false,
+            "supports_ck8s": false
+          },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "dependabot_enabled": false,
+            "codeql_enabled": false
+          },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "bronze",
+          "target": "silver",
+          "metrics": {
+            "avg_triage_days": 392.8,
+            "avg_pr_review_days": 1.4
+          },
+          "drift": null
+        }
+      }
+    },
+    {
+      "id": "wordpress-k8s",
+      "name": "WordPress",
+      "description": "A Juju charm deploying and managing WordPress on Kubernetes, with ingress integration and optional monitoring.",
+      "lifecycle": "stable",
+      "target_medal": "bronze",
+      "current_medal": "unrated",
+      "squad": "apac",
+      "documentation_url": "https://charmhub.io/wordpress-k8s",
+      "components": {
+        "foundational": [
+          {
+            "id": "wordpress-k8s",
+            "type": "charm",
+            "github_repo": "canonical/wordpress-k8s-operator"
+          }
+        ],
+        "auxiliary": [
+          {
+            "id": "mysql-k8s",
+            "type": "charm",
+            "github_repo": "canonical/mysql-k8s-operator"
+          },
+          {
+            "id": "nginx-ingress-integrator",
+            "type": "charm",
+            "github_repo": "canonical/nginx-ingress-integrator-operator"
+          }
+        ]
+      },
+      "dimensions": {
+        "test_verification": {
+          "medal": "unrated",
+          "target": "bronze",
+          "metrics": {
+            "coverage_pct": 0,
+            "stability_pct": 0,
+            "latest_build_passing": false
+          },
+          "drift": null
+        },
+        "documentation": {
+          "medal": "bronze",
+          "target": "bronze",
+          "metrics": {
+            "has_readme": true,
+            "has_contributing": true,
+            "has_security": true,
+            "diataxis_coverage": 0,
+            "style_linter_passing": false,
+            "links_passing": true
+          },
+          "drift": null
+        },
+        "substrate_compat": {
+          "medal": "silver",
+          "target": "bronze",
+          "metrics": {
+            "supports_juju_3": true,
+            "supports_juju_4": false,
+            "supports_ck8s": false
+          },
+          "drift": null
+        },
+        "security_ssdlc": {
+          "medal": "bronze",
+          "target": "bronze",
+          "metrics": {
+            "dependabot_enabled": false,
+            "codeql_enabled": false
+          },
+          "drift": null
+        },
+        "support_engagement": {
+          "medal": "bronze",
+          "target": "bronze",
+          "metrics": {
+            "avg_triage_days": 735.1,
+            "avg_pr_review_days": 3.3
           },
           "drift": null
         }

@@ -1,6 +1,6 @@
 {
-  "product_id": "mattermost",
-  "computed_at": "2026-06-30T17:00:00.636325+00:00",
+  "product_id": "discourse",
+  "computed_at": "2026-06-30T16:59:08.052125+00:00",
   "metrics": {
     "test_verification": {
       "coverage_pct": 0,
@@ -16,8 +16,8 @@
       "links_passing": true
     },
     "substrate_compat": {
-      "supports_juju_3": true,
-      "supports_juju_4": true,
+      "supports_juju_3": false,
+      "supports_juju_4": false,
       "supports_ck8s": false
     },
     "security_ssdlc": {
@@ -25,8 +25,8 @@
       "codeql_enabled": false
     },
     "support_engagement": {
-      "avg_triage_days": 315.1,
-      "avg_pr_review_days": 2.6
+      "avg_triage_days": 216.0,
+      "avg_pr_review_days": 1.9
     }
   }
 }
