@@ -9,7 +9,6 @@ jobs:
   python:
     name: Python (lint + format + tests)
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -19,28 +18,23 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: make install
 
-      - name: Lint (ruff)
-        run: ruff check .
+      - name: Lint
+        run: make lint
 
-      - name: Format check (ruff)
-        run: ruff format --check .
+      - name: Format check
+        run: make format-check
 
       - name: Tests
-        run: pytest --tb=short
+        run: make test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENROUTER_API_KEY: ""
 
   ui:
-    name: UI (typecheck + lint + tests + build)
+    name: UI (typecheck + tests + build)
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ui
-
     steps:
       - uses: actions/checkout@v4
 
@@ -51,21 +45,20 @@ jobs:
           cache-dependency-path: ui/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: make install-ui
 
       - name: Type check
-        run: npx tsc --noEmit
+        run: cd ui && npx tsc --noEmit
 
       - name: Tests
-        run: npm test
+        run: make test-ui
 
       - name: Build
-        run: npm run build
+        run: make build
 
   security:
     name: Security scan
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -74,14 +67,8 @@ jobs:
           python-version: '3.11'
           cache: pip
 
-      - name: Install pip-audit
-        run: pip install pip-audit
-
-      - name: Install project deps for audit
-        run: pip install -e ".[dev]" -q
-
-      - name: Python dependency audit
-        run: pip-audit
+      - name: Install pip-audit + project deps
+        run: pip install pip-audit && make install
 
       - uses: actions/setup-node@v4
         with:
@@ -89,8 +76,10 @@ jobs:
           cache: npm
           cache-dependency-path: ui/package-lock.json
 
-      - name: npm audit
-        run: npm audit --audit-level=high
-        working-directory: ui
+      - name: Install UI deps
+        run: make install-ui
+
+      - name: Audit
+        run: make audit
         continue-on-error: true
 

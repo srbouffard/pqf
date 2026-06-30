@@ -98,6 +98,11 @@ python -m engine \
   --drift-history drift-history.json
 ```
 
+Environment variables:
+- `GITHUB_TOKEN`       required  GitHub API token for repository checks
+- `OPENROUTER_API_KEY` required  OpenRouter API key for documentation LLM scoring
+- `OPENROUTER_MODEL`   optional  AI model for documentation scorer (default: anthropic/claude-sonnet-4.5)
+
 ### React UI
 
 ```bash

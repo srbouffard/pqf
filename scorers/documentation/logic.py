@@ -75,12 +75,13 @@ def _evaluate_docs(
     readme_content: str,
     prompt_path: Path,
     openrouter_api_key: str,
+    model: str = "anthropic/claude-sonnet-4.5",
 ) -> dict[str, Any]:
-    """Call Gemini via OpenRouter using the given prompt file. Returns parsed JSON dict."""
+    """Call OpenRouter using the given prompt file. Returns parsed JSON dict."""
     prompt = prompt_path.read_text()
     client = _make_openrouter_client(openrouter_api_key)
     response = client.chat.completions.create(
-        model="google/gemini-2.5-flash",
+        model=model,
         messages=[
             {"role": "system", "content": prompt},
             {"role": "user", "content": readme_content or "(no documentation found)"},
@@ -99,13 +100,14 @@ def compute_metrics(
     product: dict[str, Any],
     github_token: str,
     openrouter_api_key: str,
+    model: str = "anthropic/claude-sonnet-4.5",
 ) -> dict[str, Any]:
     """
     Evaluate documentation quality for a product's primary component.
 
     File checks (has_readme, has_contributing, has_security) use the GitHub API.
     links_passing checks that the documentation_url returns a 200 response.
-    diataxis_coverage and style_linter_passing are evaluated by Gemini via OpenRouter.
+    diataxis_coverage and style_linter_passing are evaluated by an OpenRouter model.
     """
     primary = _primary_repo(product)
     has_readme = _check_file_exists(primary, "README.md", github_token) if primary else False
@@ -123,11 +125,13 @@ def compute_metrics(
             readme_content,
             _PROMPTS_DIR / "diataxis_check.md",
             openrouter_api_key,
+            model,
         )
         style_result = _evaluate_docs(
             readme_content,
             _PROMPTS_DIR / "style_review.md",
             openrouter_api_key,
+            model,
         )
         diataxis_coverage = int(diataxis_result.get("diataxis_coverage", 0))
         style_linter_passing = bool(style_result.get("style_linter_passing", False))

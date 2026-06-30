@@ -16,6 +16,7 @@ ui/test-results/
 
 # Local artifacts
 .playwright-mcp/
+.pqf-score/
 *.png
 *.jpg
 *.jpeg
