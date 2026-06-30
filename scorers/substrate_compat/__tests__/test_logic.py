@@ -68,11 +68,7 @@ def _mock_workflow_file(owner_repo: str, filename: str, content: str):
     )
 
 
-_PRODUCT = {
-    "components": {
-        "foundational": [{"github_repo": "canonical/synapse-operator"}]
-    }
-}
+_PRODUCT = {"components": {"foundational": [{"github_repo": "canonical/synapse-operator"}]}}
 
 _PRODUCT_TWO_REPOS = {
     "components": {

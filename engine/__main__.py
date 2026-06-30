@@ -12,6 +12,7 @@ Usage:
     # With drift-history update (call after all per-dimension results are in):
     python -m engine ... --update-drift
 """
+
 import argparse
 import json
 import sys
@@ -56,10 +57,7 @@ def _result_to_portfolio_entry(result: ProductResult, product: dict) -> dict:
         "squad": product.get("ownership", {}).get("squad", ""),
         "documentation_url": product.get("documentation_url", ""),
         "components": product.get("components", {}),
-        "dimensions": {
-            name: _dimension_to_dict(dim)
-            for name, dim in result.dimensions.items()
-        },
+        "dimensions": {name: _dimension_to_dict(dim) for name, dim in result.dimensions.items()},
     }
 
 
@@ -68,10 +66,15 @@ def main() -> int:
     parser.add_argument("--product", required=True, help="Path to products/<id>.yaml")
     parser.add_argument("--computed", required=True, help="Path to computed/<id>.json")
     parser.add_argument("--dimensions", required=True, help="Path to config/dimensions.yaml")
-    parser.add_argument("--drift-history", required=True, dest="drift_history",
-                        help="Path to drift-history.json")
-    parser.add_argument("--update-drift", action="store_true", dest="update_drift",
-                        help="Mutate drift-history.json with current run's results")
+    parser.add_argument(
+        "--drift-history", required=True, dest="drift_history", help="Path to drift-history.json"
+    )
+    parser.add_argument(
+        "--update-drift",
+        action="store_true",
+        dest="update_drift",
+        help="Mutate drift-history.json with current run's results",
+    )
     args = parser.parse_args()
 
     product = yaml.safe_load(Path(args.product).read_text())
@@ -89,8 +92,12 @@ def main() -> int:
         now = datetime.now(UTC)
         for dim_name, dim_result in result.dimensions.items():
             update_drift_history(
-                product["id"], dim_name, dim_result.medal,
-                Medal(product["target_medal"]), drift_history, now,
+                product["id"],
+                dim_name,
+                dim_result.medal,
+                Medal(product["target_medal"]),
+                drift_history,
+                now,
             )
         drift_history_path.write_text(json.dumps(drift_history, indent=2) + "\n")
 

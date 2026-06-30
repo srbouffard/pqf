@@ -15,6 +15,7 @@ Usage:
         --dimensions config/dimensions.yaml \
         --output computed/matrix.json
 """
+
 import argparse
 import json
 import sys

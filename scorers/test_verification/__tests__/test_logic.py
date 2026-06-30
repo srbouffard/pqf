@@ -4,15 +4,11 @@ import responses
 from scorers.test_verification.logic import compute_metrics
 
 _SUMMARY = {
-    "statistic": {
-        "total": 100, "passed": 87, "failed": 3, "broken": 2, "skipped": 8, "unknown": 0
-    }
+    "statistic": {"total": 100, "passed": 87, "failed": 3, "broken": 2, "skipped": 8, "unknown": 0}
 }
 
 _PASSING_SUMMARY = {
-    "statistic": {
-        "total": 50, "passed": 50, "failed": 0, "broken": 0, "skipped": 0, "unknown": 0
-    }
+    "statistic": {"total": 50, "passed": 50, "failed": 0, "broken": 0, "skipped": 0, "unknown": 0}
 }
 
 
@@ -27,7 +23,7 @@ def test_returns_metrics_from_allure_summary():
     product = {"allure_report_url": "https://allure.example.com/reports/synapse"}
     result = compute_metrics(product)
     assert result["coverage_pct"] == 87
-    assert result["stability_pct"] == 95   # (100 - 3 - 2) / 100 * 100
+    assert result["stability_pct"] == 95  # (100 - 3 - 2) / 100 * 100
     assert result["latest_build_passing"] is False
 
 

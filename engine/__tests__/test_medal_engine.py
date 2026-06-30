@@ -96,8 +96,12 @@ def test_entirely_empty_computed_gives_unrated():
 
 
 def test_dimension_results_contain_target_medal():
-    computed = {"metrics": {"test_verification": {"coverage_pct": 85, "latest_build_passing": True},
-                             "documentation": {"has_readme": True, "diataxis_coverage": 2}}}
+    computed = {
+        "metrics": {
+            "test_verification": {"coverage_pct": 85, "latest_build_passing": True},
+            "documentation": {"has_readme": True, "diataxis_coverage": 2},
+        }
+    }
     result = compute_product(_PRODUCT, computed, _DIMENSIONS, {})
     for dim in result.dimensions.values():
         assert dim.target == Medal.GOLD
@@ -111,8 +115,12 @@ def test_product_id_and_target_medal_in_result():
 
 def test_drift_is_none_for_dimension_when_no_history():
     # With empty drift_history, compute_dimension_drift returns None
-    computed = {"metrics": {"test_verification": {"coverage_pct": 85, "latest_build_passing": True},
-                             "documentation": {"has_readme": True, "diataxis_coverage": 2}}}
+    computed = {
+        "metrics": {
+            "test_verification": {"coverage_pct": 85, "latest_build_passing": True},
+            "documentation": {"has_readme": True, "diataxis_coverage": 2},
+        }
+    }
     result = compute_product(_PRODUCT, computed, _DIMENSIONS, {})
     # Documentation is bronze, target is gold → drifting, but no history entry yet → None
     assert result.dimensions["documentation"].drift is None

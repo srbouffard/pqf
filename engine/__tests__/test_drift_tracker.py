@@ -11,6 +11,7 @@ def utc(year, month, day):
 
 # ─── compute_dimension_drift ───────────────────────────────────────────────────
 
+
 def test_no_drift_when_current_equals_target():
     assert compute_dimension_drift("matrix", "docs", Medal.GOLD, Medal.GOLD, {}) is None
 
@@ -61,6 +62,7 @@ def test_returns_overdue_when_past_deadline():
 
 
 # ─── update_drift_history ──────────────────────────────────────────────────────
+
 
 def test_records_new_drift_gold_target_six_months():
     history = {}

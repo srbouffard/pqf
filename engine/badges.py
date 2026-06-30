@@ -9,6 +9,7 @@ Usage:
         --portfolio public/portfolio.json \
         --output-dir public/badges/
 """
+
 import argparse
 import json
 import sys

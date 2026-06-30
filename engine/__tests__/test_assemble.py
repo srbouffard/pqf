@@ -22,9 +22,16 @@ _DIMENSIONS = {
     }
 }
 
-_PRODUCT = {"id": "matrix", "name": "Matrix", "description": "Chat", "lifecycle": "stable",
-            "target_medal": "gold", "ownership": {"squad": "americas"}, "documentation_url": "",
-            "components": {}}
+_PRODUCT = {
+    "id": "matrix",
+    "name": "Matrix",
+    "description": "Chat",
+    "lifecycle": "stable",
+    "target_medal": "gold",
+    "ownership": {"squad": "americas"},
+    "documentation_url": "",
+    "components": {},
+}
 
 _COMPUTED = {
     "product_id": "matrix",
@@ -77,8 +84,11 @@ def test_assemble_portfolio_medal_computed_correctly(tmp_path):
     )
     (computed_dir / "matrix.json").write_text(json.dumps(_COMPUTED))
     result = assemble_portfolio(
-        products_dir=products_dir, computed_dir=computed_dir,
-        dimensions_config=_DIMENSIONS, drift_history={}, update_drift=False,
+        products_dir=products_dir,
+        computed_dir=computed_dir,
+        dimensions_config=_DIMENSIONS,
+        drift_history={},
+        update_drift=False,
     )
     product = result["products"][0]
     # test_verification: coverage 90 → gold
@@ -109,8 +119,11 @@ def test_assemble_portfolio_missing_computed_gives_unrated(tmp_path):
     )
     # No computed/matrix.json — should treat as empty metrics
     result = assemble_portfolio(
-        products_dir=products_dir, computed_dir=computed_dir,
-        dimensions_config=_DIMENSIONS, drift_history={}, update_drift=False,
+        products_dir=products_dir,
+        computed_dir=computed_dir,
+        dimensions_config=_DIMENSIONS,
+        drift_history={},
+        update_drift=False,
     )
     assert result["products"][0]["current_medal"] == "unrated"
 
@@ -128,8 +141,11 @@ def test_assemble_portfolio_updates_drift_when_flag_set(tmp_path):
     (computed_dir / "matrix.json").write_text(json.dumps(_COMPUTED))
     drift_history: dict = {}
     assemble_portfolio(
-        products_dir=products_dir, computed_dir=computed_dir,
-        dimensions_config=_DIMENSIONS, drift_history=drift_history, update_drift=True,
+        products_dir=products_dir,
+        computed_dir=computed_dir,
+        dimensions_config=_DIMENSIONS,
+        drift_history=drift_history,
+        update_drift=True,
     )
     # After update_drift=True, matrix/documentation drift should be recorded
     assert "matrix" in drift_history

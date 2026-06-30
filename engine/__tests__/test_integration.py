@@ -14,6 +14,7 @@ Fixture metric values and expected medals:
 Overall current_medal: bronze (documentation pulls it down)
 Target: gold → all dimensions drifting, but no history entries yet → drift=None
 """
+
 import json
 import subprocess
 import sys
@@ -57,25 +58,27 @@ _FIXTURE_COMPUTED = {
 
 
 def test_cli_computes_expected_medals_for_matrix():
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".json", delete=False
-    ) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp:
         json.dump(_FIXTURE_COMPUTED, tmp)
         tmp_path = tmp.name
 
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".json", delete=False
-    ) as drift_tmp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as drift_tmp:
         json.dump({}, drift_tmp)
         drift_path = drift_tmp.name
 
     result = subprocess.run(
         [
-            sys.executable, "-m", "engine",
-            "--product", str(REPO_ROOT / "products/matrix.yaml"),
-            "--computed", tmp_path,
-            "--dimensions", str(REPO_ROOT / "config/dimensions.yaml"),
-            "--drift-history", drift_path,
+            sys.executable,
+            "-m",
+            "engine",
+            "--product",
+            str(REPO_ROOT / "products/matrix.yaml"),
+            "--computed",
+            tmp_path,
+            "--dimensions",
+            str(REPO_ROOT / "config/dimensions.yaml"),
+            "--drift-history",
+            drift_path,
         ],
         capture_output=True,
         text=True,
