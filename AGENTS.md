@@ -34,6 +34,18 @@ the UI and deploys it to GitHub Pages.
 - Vitest + React Testing Library for unit tests (co-located `.test.tsx`); Playwright for E2E.
 - Vite base path is `./` (relative) for GH Pages compatibility.
 
+#### Medal grades & colours
+
+Medal grades and their exact hex colours for the React UI:
+- **gold**: `#C7962F`
+- **silver**: `#8F8F8F`
+- **bronze**: `#9E622A`
+- **unrated**: `#666`
+- **remediating**: `#E98B06`
+- **overdue**: `#C7162B`
+
+Medal scoring logic: "at or above target" means `MEDAL_ORDER[current] >= MEDAL_ORDER[target]` (comparison, not equality). This ensures bronze or better satisfies a target of bronze.
+
 ---
 
 ## Tools
@@ -93,7 +105,7 @@ cd ui
 npm ci
 npm run dev          # Vite dev server at http://localhost:5173
 npm test             # Vitest unit tests
-npm run e2e          # Playwright E2E (requires running dev server)
+cd ui && npx playwright test  # Playwright E2E (requires running dev server)
 npm run build        # Production build → ui/dist/
 ```
 
