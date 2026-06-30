@@ -7,7 +7,7 @@ Expected per-dimension medals for computed/matrix.json:
   test_verification: silver  (coverage 87 >= 80, stability 94 >= 85; 87 < 90 → not gold)
   documentation:     bronze  (has all files + links_passing, but diataxis 3 < 4 → not silver)
   substrate_compat:  silver  (supports_juju_3=true; juju_4+ck8s false → not gold)
-  security_ssdlc:    silver  (cve_response+ssdlc_standard=true; not onboarded → not gold)
+  security_ssdlc:    silver  (dependabot_enabled=true; codeql_enabled=false → not gold)
   support_engagement: silver (triage 3 <= 5; pr_review 6 <= 7; both > gold threshold)
 
 Overall current_medal: bronze (documentation pulls it down)
