@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T12:23:27.428352+00:00",
+  "generated_at": "2026-06-30T12:28:38.907178+00:00",
   "products": [
     {
       "id": "matrix",
@@ -47,7 +47,11 @@
             "stability_pct": 0,
             "latest_build_passing": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T12:23:27.428352+00:00",
+            "deadline": "2026-12-30T12:23:27.428352+00:00"
+          }
         },
         "documentation": {
           "medal": "unrated",
@@ -60,7 +64,11 @@
             "style_linter_passing": false,
             "links_passing": true
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T12:23:27.428352+00:00",
+            "deadline": "2026-12-30T12:23:27.428352+00:00"
+          }
         },
         "substrate_compat": {
           "medal": "bronze",
@@ -70,7 +78,11 @@
             "supports_juju_4": false,
             "supports_ck8s": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T12:23:27.428352+00:00",
+            "deadline": "2026-12-30T12:23:27.428352+00:00"
+          }
         },
         "security_ssdlc": {
           "medal": "bronze",
@@ -79,7 +91,11 @@
             "dependabot_enabled": false,
             "codeql_enabled": false
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T12:23:27.428352+00:00",
+            "deadline": "2026-12-30T12:23:27.428352+00:00"
+          }
         },
         "support_engagement": {
           "medal": "bronze",
@@ -88,7 +104,11 @@
             "avg_triage_days": 364.6,
             "avg_pr_review_days": 0.4
           },
-          "drift": null
+          "drift": {
+            "status": "remediating",
+            "first_seen_at": "2026-06-30T12:23:27.428352+00:00",
+            "deadline": "2026-12-30T12:23:27.428352+00:00"
+          }
         }
       }
     }
