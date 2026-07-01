@@ -1,6 +1,6 @@
 {
   "product_id": "wordpress-k8s",
-  "computed_at": "2026-06-30T16:58:56.966818+00:00",
+  "computed_at": "2026-06-30T21:11:53.329093+00:00",
   "metrics": {
     "test_verification": {
       "coverage_pct": 0,
@@ -11,8 +11,8 @@
       "has_readme": true,
       "has_contributing": true,
       "has_security": true,
-      "diataxis_coverage": 0,
-      "style_linter_passing": false,
+      "diataxis_coverage": 3,
+      "style_linter_passing": true,
       "links_passing": true
     },
     "substrate_compat": {
@@ -26,7 +26,7 @@
     },
     "support_engagement": {
       "avg_triage_days": 735.1,
-      "avg_pr_review_days": 3.3
+      "avg_pr_review_days": 4.9
     }
   }
 }
