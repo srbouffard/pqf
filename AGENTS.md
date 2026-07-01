@@ -12,11 +12,13 @@ A nightly GitHub Actions workflow runs the scorers, computes medals, and commits
 (`computed/`, `public/portfolio.json`, `public/badges/`) to `main`. A second workflow builds
 the UI and deploys it to GitHub Pages.
 
+**Full architecture:** [docs/architecture.md](docs/architecture.md)
+
 ---
 
 ## Key constraints
 
-### Python engine (Plans 1 & 2)
+### Python engine
 
 - **Pure/IO split is non-negotiable.** Every `logic.py` receives all external data as parameters
   (no `os.environ`, no file reads). The `scorer.py` wrapper reads env vars and passes them in.
@@ -24,8 +26,9 @@ the UI and deploys it to GitHub Pages.
   create `scorers/<name>/scorer.py`. Scorer outputs must match exactly what dimensions.yaml declares.
 - Tests mock all HTTP with `responses` (`@responses.activate`); mock LLM clients with `pytest-mock`.
 - `computed/` files are GHA-written. Never hand-edit them.
+- `public/portfolio.json` is GHA-written. Never hand-edit it — regenerate with `engine/assemble.py`.
 
-### React UI (Plan 3)
+### React UI
 
 - All UI components use `@canonical/react-components` (Vanilla Framework wrappers). No Tailwind,
   no shadcn, no custom CSS frameworks.
@@ -44,7 +47,63 @@ Medal grades and their exact hex colours for the React UI:
 - **remediating**: `#E98B06`
 - **overdue**: `#C7162B`
 
-Medal scoring logic: "at or above target" means `MEDAL_ORDER[current] >= MEDAL_ORDER[target]` (comparison, not equality). This ensures bronze or better satisfies a target of bronze.
+Medal scoring logic: "at or above target" means `MEDAL_ORDER[current] >= MEDAL_ORDER[target]` (comparison, not equality).
+
+---
+
+## Makefile — the single source of truth for dev commands
+
+Always use `make` targets. CI uses the same targets.
+
+| Target | What it runs |
+|--------|-------------|
+| `make install` | `pip install -e ".[dev]"` |
+| `make install-ui` | `cd ui && npm install` |
+| `make lint` | `ruff check .` |
+| `make format` | `ruff format .` |
+| `make format-check` | `ruff format --check .` |
+| `make test` | `pytest --tb=short` |
+| `make test-ui` | `cd ui && npm test` |
+| `make test-all` | `make test` + `make test-ui` |
+| `make build` | `cd ui && npm run build` |
+| `make dev` | `cd ui && npm run dev` |
+| `make score PRODUCT=<id>` | Run all scorers for one product |
+
+---
+
+## Environment variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GITHUB_TOKEN` | Yes (scorers) | GitHub PAT for API calls in scorers |
+| `OPENROUTER_API_KEY` | Yes (documentation scorer) | OpenRouter API key |
+| `OPENROUTER_MODEL` | No | AI model (default: `anthropic/claude-sonnet-4.5`) |
+
+---
+
+## Current dimensions and key metrics
+
+| Dimension | Key outputs | Medal criteria |
+|-----------|-------------|---------------|
+| `test_verification` | `coverage_pct`, `stability_pct`, `latest_build_passing`, `uses_ops_testing`, `uses_jubilant` | Bronze: coverage ≥ 70, build passing. Silver: coverage ≥ 80, stability ≥ 85. Gold: coverage ≥ 90, stability ≥ 98. |
+| `documentation` | `has_readme`, `has_contributing`, `has_security`, `diataxis_coverage` (AI), `style_linter_passing` (AI), `links_passing` | Bronze: readme+contributing+security+links. Silver: diataxis ≥ 4. Gold: style linter + diataxis == 4. |
+| `substrate_compat` | `supports_juju_3`, `supports_juju_4`, `supports_ck8s` | Silver: juju3. Gold: juju4 + ck8s. |
+| `security_ssdlc` | `dependabot_enabled`, `codeql_enabled`, `branch_protection_required_checks` | Silver: dependabot. Gold: dependabot + codeql. |
+| `support_engagement` | `avg_triage_days`, `avg_pr_review_days`, `has_squad_topic`, `has_jira_sync` | Silver: triage ≤ 5d, PR ≤ 7d. Gold: triage ≤ 2d, PR ≤ 3d. |
+
+---
+
+## Allure report URL pattern
+
+Test coverage comes from Allure reports published to GitHub Pages. The stable URL pattern is:
+
+```
+https://canonical.github.io/{repo-name}/_latest
+```
+
+Set `allure_report_url` in the product YAML to this URL. The `_latest` symlink always points to the most recent run — no need to update the YAML when new reports are published.
+
+The `test_verification` scorer fetches `{allure_report_url}/widgets/summary.json` to extract pass/fail counts.
 
 ---
 
@@ -60,11 +119,6 @@ npm install -g @playwright/cli
 playwright-cli install chromium
 ```
 
-The skill file is at `~/.agents/skills/playwright-cli/SKILL.md`. Use it to:
-- Open the Vite dev server in a headless browser
-- Navigate to each route and take snapshots
-- Verify visual correctness without token-heavy MCP accessibility dumps
-
 Typical verification workflow after implementing a view:
 ```bash
 # Terminal 1
@@ -73,45 +127,26 @@ cd ui && npm run dev
 # Agent uses playwright-cli:
 playwright-cli open
 playwright-cli goto http://localhost:5173/
-playwright-cli snapshot  # reads from disk, stays out of context window
+playwright-cli snapshot
 playwright-cli screenshot
 playwright-cli close
 ```
-
-The playwright-cli skill is ~4x more token-efficient than Playwright MCP for multi-page sessions.
-Install it at `~/.agents/skills/playwright-cli/` for cross-runtime support (Copilot CLI, Codex,
-Gemini CLI).
 
 ---
 
 ## Running things locally
 
-### Python engine
-
 ```bash
-pip install -e ".[dev]"
-pytest                          # 105 tests
-python -m engine \
-  --product products/matrix.yaml \
-  --computed computed/matrix.json \
-  --dimensions config/dimensions.yaml \
-  --drift-history drift-history.json
-```
+# Python
+make install
+make test
 
-Environment variables:
-- `GITHUB_TOKEN`       required  GitHub API token for repository checks
-- `OPENROUTER_API_KEY` required  OpenRouter API key for documentation LLM scoring
-- `OPENROUTER_MODEL`   optional  AI model for documentation scorer (default: anthropic/claude-sonnet-4.5)
+# UI
+make install-ui
+make dev          # → http://localhost:5173
 
-### React UI
-
-```bash
-cd ui
-npm ci
-npm run dev          # Vite dev server at http://localhost:5173
-npm test             # Vitest unit tests
-cd ui && npx playwright test  # Playwright E2E (requires running dev server)
-npm run build        # Production build → ui/dist/
+# Score one product (requires GITHUB_TOKEN + OPENROUTER_API_KEY)
+make score PRODUCT=matrix
 ```
 
 ---
@@ -128,7 +163,9 @@ public/             # GHA-generated: portfolio.json + badges/
 ui/                 # React 19 + Vite dashboard
 drift-history.json  # GHA-maintained drift start dates
 .github/workflows/  # compute-metrics.yml + deploy-pages.yml
-docs/superpowers/   # Design specs and implementation plans
+docs/               # Architecture, how-to guides, view documentation
+docs/superpowers/   # Design specs and implementation plans (AI agent artifacts)
+Makefile            # Single source of truth for all dev commands
 ```
 
 ---
@@ -139,3 +176,12 @@ docs/superpowers/   # Design specs and implementation plans
 |----------|---------|--------------|
 | `compute-metrics.yml` | Nightly, push to `products/**` or `config/**`, manual | Runs scorers → engine → badges → commits artifacts |
 | `deploy-pages.yml` | Push to `main` | Builds `ui/` → deploys to GitHub Pages |
+| `ci.yml` | Push / PR | Lint, tests, security audit |
+
+---
+
+## Further reading
+
+- [docs/architecture.md](docs/architecture.md) — full data flow and design decisions
+- [docs/adding-a-product.md](docs/adding-a-product.md) — product onboarding
+- [docs/adding-a-dimension.md](docs/adding-a-dimension.md) — scorer development guide
