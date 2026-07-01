@@ -39,6 +39,14 @@ export default function GlobalNav() {
             </li>
             <li className="p-navigation__item">
               <a 
+                className={`p-navigation__link ${isActive('/dimensions') ? 'is-selected' : ''}`}
+                href="#/dimensions"
+              >
+                Dimensions
+              </a>
+            </li>
+            <li className="p-navigation__item">
+              <a 
                 className={`p-navigation__link ${isActive('/about') ? 'is-selected' : ''}`}
                 href="#/about"
               >

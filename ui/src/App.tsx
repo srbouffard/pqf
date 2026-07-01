@@ -5,6 +5,7 @@ import LoadingSpinner from './components/LoadingSpinner'
 
 const Overview = lazy(() => import('./views/Overview'))
 const ProductDetail = lazy(() => import('./views/ProductDetail'))
+const DimensionsOverview = lazy(() => import('./views/DimensionsOverview'))
 const DimensionDetail = lazy(() => import('./views/DimensionDetail'))
 const About = lazy(() => import('./views/About'))
 
@@ -17,6 +18,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Overview />} />
             <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/dimensions" element={<DimensionsOverview />} />
             <Route path="/dimensions/:id" element={<DimensionDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<Navigate to="/" replace />} />
