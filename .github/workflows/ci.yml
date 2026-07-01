@@ -26,6 +26,9 @@ jobs:
       - name: Format check
         run: make format-check
 
+      - name: Validate config schemas
+        run: make validate
+
       - name: Tests
         run: make test
         env:

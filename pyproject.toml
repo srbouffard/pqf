@@ -20,6 +20,7 @@ dev = [
     "pytest-mock>=3.14",
     "responses>=0.25",
     "ruff>=0.9",
+    "jsonschema>=4.23",
 ]
 
 [tool.setuptools.packages]

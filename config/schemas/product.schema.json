@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/srbouffard/pqf/config/schemas/product.schema.json",
+  "title": "PQF Product Definition",
+  "description": "Schema for products/{id}.yaml — defines a product tracked by the Product Quality Framework.",
+  "type": "object",
+  "required": ["id", "name", "lifecycle", "target_medal", "ownership"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Unique product identifier. Must be kebab-case and match the YAML filename (without .yaml)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable product name shown in the UI."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "One-sentence description of what the product is."
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["experimental", "beta", "stable", "legacy"],
+      "description": "Current maturity stage of the product."
+    },
+    "target_medal": {
+      "type": "string",
+      "enum": ["bronze", "silver", "gold"],
+      "description": "The medal tier this product is working toward achieving."
+    },
+    "ownership": {
+      "type": "object",
+      "required": ["squad"],
+      "additionalProperties": false,
+      "description": "Ownership and stakeholder information for the product.",
+      "properties": {
+        "squad": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The engineering squad responsible for this product."
+        },
+        "stakeholders": {
+          "type": "array",
+          "description": "Teams or groups with a stake in this product's quality.",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "users": {
+          "type": "array",
+          "description": "Known user groups or audiences for this product.",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "documentation_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the product's public documentation (e.g. Charmhub page)."
+    },
+    "allure_report_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL of the Allure test report, e.g. https://canonical.github.io/{repo}/_latest. Used by the test_verification scorer."
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Component repositories grouped by role. The first foundational component is the primary repo used by most scorers.",
+      "properties": {
+        "foundational": {
+          "type": "array",
+          "description": "Core components that implement the product's main functionality.",
+          "items": { "$ref": "#/definitions/Component" }
+        },
+        "feature": {
+          "type": "array",
+          "description": "Optional feature components that extend the product.",
+          "items": { "$ref": "#/definitions/Component" }
+        },
+        "auxiliary": {
+          "type": "array",
+          "description": "Supporting components (e.g. databases, operators) the product depends on.",
+          "items": { "$ref": "#/definitions/Component" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Component": {
+      "type": "object",
+      "required": ["id", "type", "github_repo"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Short identifier for this component (kebab-case)."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["charm", "snap", "rock", "library", "other"],
+          "description": "Component packaging type."
+        },
+        "github_repo": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$",
+          "description": "GitHub repository in 'owner/repo' format."
+        }
+      }
+    }
+  }
+}

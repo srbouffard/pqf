@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/srbouffard/pqf/config/schemas/dimensions.schema.json",
+  "title": "PQF Dimensions Config",
+  "description": "Schema for config/dimensions.yaml — defines all quality dimensions, their output metrics, and medal rubrics.",
+  "type": "object",
+  "required": ["dimensions"],
+  "additionalProperties": false,
+  "properties": {
+    "dimensions": {
+      "type": "object",
+      "description": "Map of dimension IDs to dimension definitions. Keys must be snake_case.",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/Dimension"
+      }
+    }
+  },
+  "definitions": {
+    "Dimension": {
+      "type": "object",
+      "required": ["label", "description", "scorer", "outputs", "medals"],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable dimension name shown in the UI."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "One-sentence description of what this dimension measures."
+        },
+        "scorer": {
+          "type": "string",
+          "pattern": "^scorers/[a-z][a-z0-9_]*/scorer\\.py$",
+          "description": "Relative path to the scorer entry point, e.g. scorers/test_verification/scorer.py"
+        },
+        "outputs": {
+          "type": "object",
+          "description": "Map of metric keys to their metadata. Keys must be snake_case.",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/OutputMeta"
+          }
+        },
+        "medals": {
+          "$ref": "#/definitions/MedalRubric"
+        }
+      }
+    },
+    "OutputMeta": {
+      "type": "object",
+      "required": ["type", "label", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["boolean", "number", "string"],
+          "description": "Value type produced by the scorer for this metric."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short human-readable name shown in the UI metrics table."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What this metric measures and how it is computed."
+        },
+        "range": {
+          "type": "string",
+          "description": "Optional description of valid value range, e.g. '0–100' or '≥ 0 days'. Required for number types."
+        },
+        "ai_assisted": {
+          "type": "boolean",
+          "description": "If true, the metric is evaluated by an LLM via OpenRouter rather than deterministic code. Shown with a ✦ AI badge in the UI."
+        }
+      }
+    },
+    "MedalRubric": {
+      "type": "object",
+      "description": "Medal tier criteria. Each tier is a list of criterion expressions that must ALL pass. Tiers are cumulative (gold implies silver implies bronze).",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "bronze": {
+          "$ref": "#/definitions/CriteriaList"
+        },
+        "silver": {
+          "$ref": "#/definitions/CriteriaList"
+        },
+        "gold": {
+          "$ref": "#/definitions/CriteriaList"
+        }
+      }
+    },
+    "CriteriaList": {
+      "type": "array",
+      "description": "List of criterion expressions. Each must be of the form '<metric_key> <operator> <value>', e.g. 'coverage_pct >= 70' or 'latest_build_passing == true'.",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]* (>=|<=|==|!=|>|<) .+$",
+        "description": "A criterion expression: '<metric_key> <operator> <value>'"
+      }
+    }
+  }
+}

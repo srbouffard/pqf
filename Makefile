@@ -6,6 +6,7 @@
 .DEFAULT_GOAL := help
 .PHONY: help install install-ui install-all \
 	lint format format-check \
+	validate \
 	test test-ui test-all \
 	build dev \
 	audit audit-python audit-ui \
@@ -31,6 +32,7 @@ help:
 	@echo "    make lint           Lint Python with ruff"
 	@echo "    make format         Auto-format Python with ruff"
 	@echo "    make format-check   Check Python formatting without modifying"
+	@echo "    make validate       Validate config YAML files against JSON Schemas"
 	@echo "    make test           Run Python unit tests"
 	@echo ""
 	@echo "  UI (React/TypeScript)"
@@ -60,6 +62,10 @@ install-ui:
 	cd ui && $(NPM) install
 
 install-all: install install-ui
+
+# ── Config validation ─────────────────────────────────────────────────────────
+validate:
+	$(PYTHON) -m engine.validate
 
 # ── Python: lint & format ────────────────────────────────────────────────────
 lint:
