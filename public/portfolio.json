@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T00:20:40.428967+00:00",
+  "generated_at": "2026-07-01T02:00:02.989842+00:00",
   "products": [
     {
       "id": "discourse",
@@ -7,7 +7,7 @@
       "description": "An open-source, community- and customer-friendly discussion platform.",
       "lifecycle": "stable",
       "target_medal": "silver",
-      "current_medal": "unrated",
+      "current_medal": "bronze",
       "squad": "americas",
       "documentation_url": "https://charmhub.io/discourse-k8s",
       "allure_report_url": "https://canonical.github.io/discourse-k8s-operator/_latest",
@@ -39,18 +39,16 @@
       },
       "dimensions": {
         "test_verification": {
-          "medal": "unrated",
+          "medal": "silver",
           "target": "silver",
           "metrics": {
-            "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "coverage_pct": 83,
+            "stability_pct": 92,
+            "latest_build_passing": false,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
-          "drift": {
-            "status": "remediating",
-            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
-            "deadline": "2027-06-30T17:00:20.537842+00:00"
-          }
+          "drift": null
         },
         "documentation": {
           "medal": "bronze",
@@ -88,7 +86,8 @@
           "target": "silver",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": {
             "status": "remediating",
@@ -101,7 +100,9 @@
           "target": "silver",
           "metrics": {
             "avg_triage_days": 216.0,
-            "avg_pr_review_days": 1.9
+            "avg_pr_review_days": 1.9,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": {
             "status": "remediating",
@@ -144,18 +145,16 @@
       },
       "dimensions": {
         "test_verification": {
-          "medal": "unrated",
+          "medal": "silver",
           "target": "silver",
           "metrics": {
-            "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "coverage_pct": 94,
+            "stability_pct": 94,
+            "latest_build_passing": false,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
-          "drift": {
-            "status": "remediating",
-            "first_seen_at": "2026-06-30T16:03:48.224357+00:00",
-            "deadline": "2027-06-30T16:03:48.224357+00:00"
-          }
+          "drift": null
         },
         "documentation": {
           "medal": "unrated",
@@ -164,7 +163,7 @@
             "has_readme": true,
             "has_contributing": false,
             "has_security": true,
-            "diataxis_coverage": 2,
+            "diataxis_coverage": 3,
             "style_linter_passing": true,
             "links_passing": true
           },
@@ -193,7 +192,8 @@
           "target": "silver",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": {
             "status": "remediating",
@@ -206,7 +206,9 @@
           "target": "silver",
           "metrics": {
             "avg_triage_days": 731.1,
-            "avg_pr_review_days": 0.6
+            "avg_pr_review_days": 0.6,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": {
             "status": "remediating",
@@ -253,8 +255,10 @@
           "target": "bronze",
           "metrics": {
             "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "stability_pct": 100,
+            "latest_build_passing": true,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
           "drift": null
         },
@@ -286,7 +290,8 @@
           "target": "bronze",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": null
         },
@@ -295,7 +300,9 @@
           "target": "bronze",
           "metrics": {
             "avg_triage_days": 147.8,
-            "avg_pr_review_days": 1.1
+            "avg_pr_review_days": 1.1,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": null
         }
@@ -345,8 +352,10 @@
           "target": "gold",
           "metrics": {
             "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "stability_pct": 100,
+            "latest_build_passing": true,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
           "drift": {
             "status": "remediating",
@@ -361,7 +370,7 @@
             "has_readme": true,
             "has_contributing": true,
             "has_security": false,
-            "diataxis_coverage": 2,
+            "diataxis_coverage": 3,
             "style_linter_passing": true,
             "links_passing": true
           },
@@ -390,7 +399,8 @@
           "target": "gold",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": {
             "status": "remediating",
@@ -403,7 +413,9 @@
           "target": "gold",
           "metrics": {
             "avg_triage_days": 364.6,
-            "avg_pr_review_days": 0.4
+            "avg_pr_review_days": 0.4,
+            "has_squad_topic": true,
+            "has_jira_sync": false
           },
           "drift": {
             "status": "remediating",
@@ -444,7 +456,9 @@
           "metrics": {
             "coverage_pct": 0,
             "stability_pct": 0,
-            "latest_build_passing": false
+            "latest_build_passing": false,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
           "drift": {
             "status": "remediating",
@@ -488,7 +502,8 @@
           "target": "gold",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": {
             "status": "remediating",
@@ -501,7 +516,9 @@
           "target": "gold",
           "metrics": {
             "avg_triage_days": 315.1,
-            "avg_pr_review_days": 2.6
+            "avg_pr_review_days": 2.6,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": {
             "status": "remediating",
@@ -532,12 +549,14 @@
       },
       "dimensions": {
         "test_verification": {
-          "medal": "unrated",
+          "medal": "gold",
           "target": "bronze",
           "metrics": {
-            "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "coverage_pct": 100,
+            "stability_pct": 100,
+            "latest_build_passing": true,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
           "drift": null
         },
@@ -569,7 +588,8 @@
           "target": "bronze",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": null
         },
@@ -578,7 +598,9 @@
           "target": "bronze",
           "metrics": {
             "avg_triage_days": 0.0,
-            "avg_pr_review_days": 4.6
+            "avg_pr_review_days": 4.6,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": null
         }
@@ -590,7 +612,7 @@
       "description": "A platform that unifies XDR and SIEM protection for endpoints and cloud workloads.",
       "lifecycle": "stable",
       "target_medal": "silver",
-      "current_medal": "unrated",
+      "current_medal": "bronze",
       "squad": "emea",
       "documentation_url": "https://wazuh.com/",
       "allure_report_url": "https://canonical.github.io/wazuh-server-operator/_latest",
@@ -622,18 +644,16 @@
       },
       "dimensions": {
         "test_verification": {
-          "medal": "unrated",
+          "medal": "gold",
           "target": "silver",
           "metrics": {
-            "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "coverage_pct": 100,
+            "stability_pct": 100,
+            "latest_build_passing": true,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
-          "drift": {
-            "status": "remediating",
-            "first_seen_at": "2026-06-30T17:00:20.537842+00:00",
-            "deadline": "2027-06-30T17:00:20.537842+00:00"
-          }
+          "drift": null
         },
         "documentation": {
           "medal": "bronze",
@@ -671,7 +691,8 @@
           "target": "silver",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": {
             "status": "remediating",
@@ -684,7 +705,9 @@
           "target": "silver",
           "metrics": {
             "avg_triage_days": 392.8,
-            "avg_pr_review_days": 1.4
+            "avg_pr_review_days": 1.4,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": {
             "status": "remediating",
@@ -731,8 +754,10 @@
           "target": "bronze",
           "metrics": {
             "coverage_pct": 0,
-            "stability_pct": 0,
-            "latest_build_passing": false
+            "stability_pct": 100,
+            "latest_build_passing": true,
+            "uses_ops_testing": true,
+            "uses_jubilant": false
           },
           "drift": null
         },
@@ -764,7 +789,8 @@
           "target": "bronze",
           "metrics": {
             "dependabot_enabled": false,
-            "codeql_enabled": false
+            "codeql_enabled": false,
+            "branch_protection_required_checks": false
           },
           "drift": null
         },
@@ -773,7 +799,9 @@
           "target": "bronze",
           "metrics": {
             "avg_triage_days": 735.1,
-            "avg_pr_review_days": 4.9
+            "avg_pr_review_days": 4.9,
+            "has_squad_topic": true,
+            "has_jira_sync": true
           },
           "drift": null
         }
