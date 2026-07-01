@@ -2,7 +2,6 @@
 import json
 from pathlib import Path
 
-import pytest
 import yaml
 
 from engine.validate import validate_file
@@ -18,7 +17,7 @@ class TestDimensionsSchema:
     def test_real_dimensions_yaml_is_valid(self, tmp_path):
         real_path = Path(__file__).parent.parent.parent / "config" / "dimensions.yaml"
         errors = validate_file(real_path, _DIM_SCHEMA)
-        assert errors == [], f"dimensions.yaml is invalid:\n" + "\n".join(errors)
+        assert errors == [], "dimensions.yaml is invalid:\n" + "\n".join(errors)
 
     def test_missing_required_fields_fail(self, tmp_path):
         bad = {"dimensions": {"my_dim": {"label": "X"}}}
