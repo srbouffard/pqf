@@ -48,7 +48,7 @@ products/*.yaml          config/dimensions.yaml
 
 ### `compute-metrics.yml` — nightly scorer
 
-**Triggers:** Scheduled nightly, push to `products/**` or `config/**`, manual dispatch
+**Triggers:** Scheduled nightly, push to `products/**`, `config/**`, `scorers/**`, or `engine/**`, manual dispatch
 
 **Steps:**
 1. Check out repo with write access
@@ -80,6 +80,36 @@ Every scorer is split into two files:
 - `scorer.py` — a thin IO wrapper that reads env vars (`GITHUB_TOKEN`, `OPENROUTER_API_KEY`), loads the product YAML, calls `logic.py`, and prints JSON to stdout.
 
 This split means the core scoring logic can be tested exhaustively without network access.
+
+### AI-assisted scoring
+
+Some metrics cannot be reliably computed with deterministic rules — for example, assessing whether a README covers all four [Diátaxis](https://diataxis.fr/) documentation types, or whether writing style meets Canonical guidelines. These are marked `ai_assisted: true` in `dimensions.yaml` and evaluated by an LLM via [OpenRouter](https://openrouter.ai/).
+
+**How it works:**
+
+1. `scorer.py` reads `OPENROUTER_API_KEY` from the environment and passes it to `logic.py`.
+2. `logic.py` creates an OpenAI-compatible client pointed at `https://openrouter.ai/api/v1`.
+3. A prompt file in `scorers/{dim}/prompts/` defines the system prompt. The product's relevant content (e.g. README text) is passed as the user message.
+4. The LLM returns a structured JSON response which is parsed directly into metric values.
+5. If `OPENROUTER_API_KEY` is not set, the scorer falls back to `0`/`False` defaults — so the pipeline never fails in environments without the key.
+
+**Prompt files** live at `scorers/{dim}/prompts/{metric_name}.md`. Each prompt instructs the model to return a specific JSON schema. Example from `documentation/prompts/diataxis_check.md`:
+
+```
+You are a technical documentation reviewer...
+Return ONLY valid JSON: {"diataxis_coverage": <integer 0–4>}
+```
+
+**Current AI-assisted metrics:**
+
+| Dimension | Metric | What the LLM evaluates |
+|-----------|--------|------------------------|
+| `documentation` | `diataxis_coverage` | How many of the 4 Diátaxis doc types are present in the README |
+| `documentation` | `style_linter_passing` | Whether writing style meets Canonical documentation guidelines |
+
+**Default model:** `anthropic/claude-sonnet-4-5` (configurable via `OPENROUTER_MODEL` env var).
+
+**In the UI:** AI-assisted metrics display a ✦ AI badge in the dimension detail Metrics table so users know the value is LLM-derived rather than deterministic.
 
 ### `dimensions.yaml` as the single config knob
 
