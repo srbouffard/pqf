@@ -17,7 +17,10 @@ ui/test-results/
 # Local artifacts
 .playwright-mcp/
 .pqf-score/
+initial_feedback.md
+
+# Screenshots (except docs/screenshots/ which are committed)
 *.png
 *.jpg
 *.jpeg
-initial_feedback.md
+!docs/screenshots/*.png

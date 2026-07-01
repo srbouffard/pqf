@@ -41,6 +41,7 @@ README.md                      Overhaul: badge, 1-para purpose, quickstart, quic
 CONTRIBUTING.md                New: local setup, PR workflow, tests, code style
 AGENTS.md                      Update: Makefile, new metrics, model config, allure URLs
 docs/
+  README.md                    Landing page index (GitHub renders this when browsing /docs)
   architecture.md              System overview, data flow, GHA pipeline (ASCII diagram)
   adding-a-product.md          How to add/edit a product YAML + full field reference
   adding-a-dimension.md        How to create a new scorer + extend dimensions.yaml
@@ -52,6 +53,7 @@ docs/
     overview.png               Full-page screenshot of Portfolio Overview
     product-detail.png         Full-page screenshot of a Product Detail page
     dimension-detail.png       Full-page screenshot of a Dimension Detail page
+  superpowers/                 AI agent internal artifacts (specs, plans) — not user docs
 ```
 
 ---
