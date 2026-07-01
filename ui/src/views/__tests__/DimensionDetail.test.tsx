@@ -127,20 +127,20 @@ describe('DimensionDetail', () => {
 
   it('renders metrics card with scoring badges', () => {
     wrap('documentation')
-    const metricsCard = screen.getByRole('heading', { name: 'Metrics' }).closest('.p-card')
+    const metricsCard = screen.getByRole('heading', { name: 'Metrics' }).closest('.p-card') as HTMLElement
     expect(metricsCard).not.toBeNull()
-    expect(within(metricsCard!).getByText('Diátaxis coverage')).toBeInTheDocument()
-    expect(within(metricsCard!).getByText('0–4')).toBeInTheDocument()
-    expect(within(metricsCard!).getByText('Deterministic')).toBeInTheDocument()
-    expect(within(metricsCard!).getAllByText('✦ AI')).toHaveLength(2)
+    expect(within(metricsCard).getByText('Diátaxis coverage')).toBeInTheDocument()
+    expect(within(metricsCard).getByText('0–4')).toBeInTheDocument()
+    expect(within(metricsCard).getByText('Deterministic')).toBeInTheDocument()
+    expect(within(metricsCard).getAllByText('✦ AI')).toHaveLength(2)
   })
 
   it('renders rubric criterion labels and keeps descriptions on hover only', () => {
     wrap('documentation')
-    const rubricCard = screen.getByRole('heading', { name: 'Medal rubric' }).closest('.p-card')
+    const rubricCard = screen.getByRole('heading', { name: 'Medal rubric' }).closest('.p-card') as HTMLElement
     expect(rubricCard).not.toBeNull()
-    expect(within(rubricCard!).getByText('README present')).toBeInTheDocument()
-    const criterion = within(rubricCard!).getByText('has_readme == true').closest('li')
+    expect(within(rubricCard).getByText('README present')).toBeInTheDocument()
+    const criterion = within(rubricCard).getByText('has_readme == true').closest('li')
     expect(criterion).toHaveAttribute('title', 'A README.md exists in the primary component repository.')
     expect(screen.getAllByText('A README.md exists in the primary component repository.')).toHaveLength(1)
   })
