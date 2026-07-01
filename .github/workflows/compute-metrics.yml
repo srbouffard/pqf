@@ -9,6 +9,8 @@ on:
     paths:
       - 'products/**'        # re-run when a product YAML changes
       - 'config/**'          # re-run when dimension config changes
+      - 'scorers/**'         # re-run when scorer logic changes
+      - 'engine/**'          # re-run when assembly logic changes
 
 permissions:
   contents: write            # needed for the commit-artifacts job
